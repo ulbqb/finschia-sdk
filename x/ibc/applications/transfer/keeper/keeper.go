@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	"github.com/line/lbm-sdk/codec"
 	"github.com/line/lbm-sdk/store/prefix"
 	sdk "github.com/line/lbm-sdk/types"
@@ -84,8 +86,13 @@ func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
 
 // GetPort returns the portID for the transfer module. Used in ExportGenesis
 func (k Keeper) GetPort(ctx sdk.Context) string {
+	fmt.Printf("2. keeper  -- i  %T: &i=%p %v\n", k, &k, k.storeKey)
 	store := ctx.KVStore(k.storeKey)
 	return string(store.Get(types.PortKey))
+}
+
+func (k Keeper) GetStoreKey() sdk.StoreKey {
+	return k.storeKey
 }
 
 // SetPort sets the portID for the transfer module. Used in InitGenesis
