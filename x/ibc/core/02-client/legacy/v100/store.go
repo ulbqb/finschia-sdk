@@ -14,6 +14,7 @@ import (
 	host "github.com/line/lbm-sdk/x/ibc/core/24-host"
 	"github.com/line/lbm-sdk/x/ibc/core/exported"
 	smtypes "github.com/line/lbm-sdk/x/ibc/light-clients/06-solomachine/types"
+	ibctmtypes "github.com/line/lbm-sdk/x/ibc/light-clients/07-tendermint/types"
 	ibcoctypes "github.com/line/lbm-sdk/x/ibc/light-clients/99-ostracon/types"
 )
 
@@ -96,6 +97,24 @@ func MigrateStore(ctx sdk.Context, storeKey sdk.StoreKey, cdc codec.BinaryCodec)
 			addConsensusMetadata(ctx, clientStore)
 
 			if err = ibcoctypes.PruneAllExpiredConsensusStates(ctx, clientStore, cdc, tmClientState); err != nil {
+				return err
+			}
+
+		case exported.Tendermint:
+			var clientState exported.ClientState
+			if err := cdc.UnmarshalInterface(bz, &clientState); err != nil {
+				return sdkerrors.Wrap(err, "failed to unmarshal client state bytes into tendermint client state")
+			}
+
+			tmClientState, ok := clientState.(*ibctmtypes.ClientState)
+			if !ok {
+				return sdkerrors.Wrap(clienttypes.ErrInvalidClient, "client state is not tendermint even though client id contains 99-tendermint")
+			}
+
+			// add iteration keys so pruning will be successful
+			addConsensusMetadata(ctx, clientStore)
+
+			if err = ibctmtypes.PruneAllExpiredConsensusStates(ctx, clientStore, cdc, tmClientState); err != nil {
 				return err
 			}
 

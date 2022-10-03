@@ -8,6 +8,7 @@ import (
 	channeltypes "github.com/line/lbm-sdk/x/ibc/core/04-channel/types"
 	commitmenttypes "github.com/line/lbm-sdk/x/ibc/core/23-commitment/types"
 	solomachinetypes "github.com/line/lbm-sdk/x/ibc/light-clients/06-solomachine/types"
+	ibctmtypes "github.com/line/lbm-sdk/x/ibc/light-clients/07-tendermint/types"
 	localhosttypes "github.com/line/lbm-sdk/x/ibc/light-clients/09-localhost/types"
 	ibcoctypes "github.com/line/lbm-sdk/x/ibc/light-clients/99-ostracon/types"
 )
@@ -21,4 +22,5 @@ func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
 	ibcoctypes.RegisterInterfaces(registry)
 	localhosttypes.RegisterInterfaces(registry)
 	commitmenttypes.RegisterInterfaces(registry)
+	ibctmtypes.RegisterInterfaces(registry)
 }
