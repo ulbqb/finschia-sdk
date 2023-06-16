@@ -856,10 +856,12 @@ func (rs *Store) loadCommitStoreFromParams(key types.StoreKey, id types.CommitID
 	case types.StoreTypeIAVL:
 		var store types.CommitKVStore
 		var err error
-
-		if params.initialVersion == 0 {
-			store, err = iavl.LoadStore(db, rs.logger, key, id, rs.lazyLoading, rs.iavlCacheSize, rs.iavlDisableFastNode)
-		} else {
+		switch {
+		case params.statelessTree != nil:
+			store, err = iavl.LoadStoreWithStatelessTree(params.statelessTree)
+		case params.initialVersion == 0:
+			store, err = iavl.LoadStore(db, rs.logger, key, id, rs.lazyLoading, rs.iavlCacheSize, true)
+		default:
 			store, err = iavl.LoadStoreWithInitialVersion(db, rs.logger, key, id, rs.lazyLoading, params.initialVersion, rs.iavlCacheSize, rs.iavlDisableFastNode)
 		}
 
@@ -939,11 +941,28 @@ func (rs *Store) RollbackToVersion(target int64) error {
 	return rs.LoadLatestVersion()
 }
 
+func (s *Store) GetStoreKeys() []types.StoreKey {
+	storeKeys := make([]types.StoreKey, 0, len(s.keysByName))
+	for _, sk := range s.keysByName {
+		storeKeys = append(storeKeys, sk)
+	}
+	return storeKeys
+}
+
+func (s *Store) SetupStoresParams(oracle iavltree.OracleClientI, version int64) {
+	for _, key := range s.GetStoreKeys() {
+		storeParams := s.storesParams[key]
+		storeParams.statelessTree = iavltree.NewStatelessTree(dbm.NewMemDB(), 100, false, version, oracle, key.Name())
+		s.storesParams[key] = storeParams
+	}
+}
+
 type storeParams struct {
 	key            types.StoreKey
 	db             dbm.DB
 	typ            types.StoreType
 	initialVersion uint64
+	statelessTree  iavl.Tree
 }
 
 func GetLatestVersion(db dbm.DB) int64 {

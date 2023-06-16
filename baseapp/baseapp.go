@@ -9,6 +9,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 
+	iavltree "github.com/cosmos/iavl"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
@@ -841,4 +842,29 @@ func (app *BaseApp) runMsgs(ctx sdk.Context, msgs []sdk.Msg) (*sdk.Result, error
 		Log:    strings.TrimSpace(msgLogs.String()),
 		Events: events.ToABCIEvents(),
 	}, nil
+}
+
+func (app *BaseApp) CloneWithVersion(version int64, oracle iavltree.OracleClientI) (*BaseApp, error) {
+	cms := app.cms.(*rootmulti.Store)
+	storeKeys := cms.GetStoreKeys()
+
+	newApp := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
+
+	newApp.msgServiceRouter = app.msgServiceRouter
+	newApp.beginBlocker = app.beginBlocker
+	newApp.endBlocker = app.endBlocker
+
+	// stores are mounted
+	newApp.MountStores(storeKeys...)
+
+	// set oracle to IAVL Store
+	cmsStore := newApp.cms.(*rootmulti.Store)
+	cmsStore.SetupStoresParams(oracle, version-1)
+
+	err := newApp.LoadLatestVersion()
+	if err != nil {
+		return nil, err
+	}
+
+	return newApp, err
 }

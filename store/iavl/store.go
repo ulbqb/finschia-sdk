@@ -42,6 +42,13 @@ type Store struct {
 	tree Tree
 }
 
+// LoadStoreWithDeepIAVLTree returns an IAVL Store as a CommitKVStore with given deep tree.
+func LoadStoreWithStatelessTree(tree Tree) (types.CommitKVStore, error) {
+	return &Store{
+		tree: tree,
+	}, nil
+}
+
 // LoadStore returns an IAVL Store as a CommitKVStore. Internally, it will load the
 // store's version (id) from the provided DB. An error is returned if the version
 // fails to load, or if called with a positive version on an empty tree.
