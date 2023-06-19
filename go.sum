@@ -1170,8 +1170,8 @@ github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVM
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/ugorji/go/codec v1.1.7 h1:2SvQaVZ1ouYrrKKwoSk2pzd4A9evlKJb9oTL+OaLUSs=
 github.com/ugorji/go/codec v1.1.7/go.mod h1:Ax+UKWsSmolVDwsd+7N3ZtXu+yMGCf907BLYF3GoBXY=
-github.com/ulbqb/iavl v0.19.5-0.20230616181419-2e1cc18a2adf h1:yOKHDps9UYqueXCG+3NMdD+IYV3uP+EO0qu4nxxiyuI=
-github.com/ulbqb/iavl v0.19.5-0.20230616181419-2e1cc18a2adf/go.mod h1:eMSRoPfRmODwxHiKr9OruNBRoVkHLJajAHzNVSl/Umo=
+github.com/ulbqb/iavl v0.19.5-0.20230619075131-0950ee5a9a9d h1:ZXJawk5G0HGSjWwsCUGiS9wunui1F/IDMM7Y3fPwaF4=
+github.com/ulbqb/iavl v0.19.5-0.20230619075131-0950ee5a9a9d/go.mod h1:eMSRoPfRmODwxHiKr9OruNBRoVkHLJajAHzNVSl/Umo=
 github.com/ultraware/funlen v0.0.3/go.mod h1:Dp4UiAus7Wdb9KUZsYWZEWiRzGuM2kXM1lPbfaF6xhA=
 github.com/ultraware/whitespace v0.0.5/go.mod h1:aVMh/gQve5Maj9hQ/hg+F75lr/X5A89uZnzAmWSineA=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=

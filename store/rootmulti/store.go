@@ -949,7 +949,7 @@ func (s *Store) GetStoreKeys() []types.StoreKey {
 	return storeKeys
 }
 
-func (s *Store) SetupStoresParams(oracle iavltree.OracleClientI, version int64) {
+func (s *Store) SetStatelessTree(oracle iavltree.OracleClientI, version int64) {
 	for _, key := range s.GetStoreKeys() {
 		storeParams := s.storesParams[key]
 		storeParams.statelessTree = iavltree.NewStatelessTree(dbm.NewMemDB(), 100, false, version, oracle, key.Name())

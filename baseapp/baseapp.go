@@ -844,27 +844,36 @@ func (app *BaseApp) runMsgs(ctx sdk.Context, msgs []sdk.Msg) (*sdk.Result, error
 	}, nil
 }
 
-func (app *BaseApp) CloneWithVersion(version int64, oracle iavltree.OracleClientI) (*BaseApp, error) {
-	cms := app.cms.(*rootmulti.Store)
+func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (*BaseApp, error) {
+	cms, ok := app.CommitMultiStore().(*rootmulti.Store)
+	if !ok {
+		return nil, errors.New("stateless application requires a rootmulti store")
+	}
 	storeKeys := cms.GetStoreKeys()
 
-	newApp := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
+	stateless := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
 
-	newApp.msgServiceRouter = app.msgServiceRouter
-	newApp.beginBlocker = app.beginBlocker
-	newApp.endBlocker = app.endBlocker
+	stateless.msgServiceRouter = app.msgServiceRouter
+	stateless.beginBlocker = app.beginBlocker
+	stateless.endBlocker = app.endBlocker
 
 	// stores are mounted
-	newApp.MountStores(storeKeys...)
+	stateless.MountStores(storeKeys...)
 
-	// set oracle to IAVL Store
-	cmsStore := newApp.cms.(*rootmulti.Store)
-	cmsStore.SetupStoresParams(oracle, version-1)
+	// set param store
+	stateless.paramStore = app.paramStore
 
-	err := newApp.LoadLatestVersion()
+	// set stateless store
+	statelessCms, ok := stateless.CommitMultiStore().(*rootmulti.Store)
+	if !ok {
+		return nil, errors.New("stateless application requires a rootmulti store")
+	}
+	statelessCms.SetStatelessTree(oracle, version-1)
+
+	err := stateless.LoadLatestVersion()
 	if err != nil {
 		return nil, err
 	}
 
-	return newApp, err
+	return stateless, err
 }
