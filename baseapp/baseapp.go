@@ -845,12 +845,6 @@ func (app *BaseApp) runMsgs(ctx sdk.Context, msgs []sdk.Msg) (*sdk.Result, error
 }
 
 func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (*BaseApp, error) {
-	cms, ok := app.CommitMultiStore().(*rootmulti.Store)
-	if !ok {
-		return nil, errors.New("stateless application requires a rootmulti store")
-	}
-	storeKeys := cms.GetStoreKeys()
-
 	stateless := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
 
 	stateless.msgServiceRouter = app.msgServiceRouter
@@ -858,7 +852,14 @@ func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (
 	stateless.endBlocker = app.endBlocker
 
 	// stores are mounted
-	stateless.MountStores(storeKeys...)
+	cms, ok := app.CommitMultiStore().(*rootmulti.Store)
+	if !ok {
+		return nil, errors.New("stateless application requires a rootmulti store")
+	}
+	kvStoreKeys := cms.GetKVStoreKeys()
+	stateless.MountKVStores(kvStoreKeys)
+	memStoreKeys := cms.GetMemStoreKeys()
+	stateless.MountMemoryStores(memStoreKeys)
 
 	// set param store
 	stateless.paramStore = app.paramStore

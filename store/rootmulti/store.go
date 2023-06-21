@@ -28,6 +28,7 @@ import (
 	"github.com/Finschia/finschia-sdk/store/tracekv"
 	"github.com/Finschia/finschia-sdk/store/transient"
 	"github.com/Finschia/finschia-sdk/store/types"
+	sdk "github.com/Finschia/finschia-sdk/types"
 	sdkerrors "github.com/Finschia/finschia-sdk/types/errors"
 )
 
@@ -941,16 +942,28 @@ func (rs *Store) RollbackToVersion(target int64) error {
 	return rs.LoadLatestVersion()
 }
 
-func (s *Store) GetStoreKeys() []types.StoreKey {
-	storeKeys := make([]types.StoreKey, 0, len(s.keysByName))
-	for _, sk := range s.keysByName {
-		storeKeys = append(storeKeys, sk)
+func (s *Store) GetKVStoreKeys() map[string]*sdk.KVStoreKey {
+	storeKeys := map[string]*sdk.KVStoreKey{}
+	for key, sk := range s.keysByName {
+		if kvsk, ok := sk.(*sdk.KVStoreKey); ok {
+			storeKeys[key] = kvsk
+		}
+	}
+	return storeKeys
+}
+
+func (s *Store) GetMemStoreKeys() map[string]*sdk.MemoryStoreKey {
+	storeKeys := map[string]*sdk.MemoryStoreKey{}
+	for key, sk := range s.keysByName {
+		if msk, ok := sk.(*sdk.MemoryStoreKey); ok {
+			storeKeys[key] = msk
+		}
 	}
 	return storeKeys
 }
 
 func (s *Store) SetStatelessTree(oracle iavltree.OracleClientI, version int64) {
-	for _, key := range s.GetStoreKeys() {
+	for _, key := range s.GetKVStoreKeys() {
 		storeParams := s.storesParams[key]
 		storeParams.statelessTree = iavltree.NewStatelessTree(dbm.NewMemDB(), 100, false, version, oracle, key.Name())
 		s.storesParams[key] = storeParams
