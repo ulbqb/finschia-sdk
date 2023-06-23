@@ -848,6 +848,7 @@ func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (
 	stateless := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
 
 	stateless.msgServiceRouter = app.msgServiceRouter
+	stateless.anteHandler = app.anteHandler
 	stateless.beginBlocker = app.beginBlocker
 	stateless.endBlocker = app.endBlocker
 
