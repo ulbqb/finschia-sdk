@@ -5,7 +5,6 @@ package types
 
 import (
 	fmt "fmt"
-	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
@@ -23,7 +22,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// Params defines the parameters for the token module.
+// Params defines the parameters for the settlement module.
 type Params struct {
 }
 
@@ -60,23 +59,27 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
-// Challenge defines token information.
+// Challenge defines challenge information.
 // a.k.a Contract.sol#ChallengeData.
 type Challenge struct {
+	// Rollup name
+	RollupName string `protobuf:"bytes,1,opt,name=rollup_name,json=rollupName,proto3" json:"rollup_name,omitempty"`
+	// Block number preceding the challenged block.
+	BlockHeight int64 `protobuf:"varint,2,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
+	// Address of the challenger.
+	Challenger string `protobuf:"bytes,3,opt,name=challenger,proto3" json:"challenger,omitempty"`
+	// Address of the defender.
+	Defender string `protobuf:"bytes,4,opt,name=defender,proto3" json:"defender,omitempty"`
 	// Left bound of the binary search: challenger & defender agree on all steps
 	// <= L.
-	L []byte `protobuf:"bytes,1,opt,name=l,proto3" json:"l,omitempty"`
+	L uint64 `protobuf:"varint,5,opt,name=l,proto3" json:"l,omitempty"`
 	// Right bound of the binary search: challenger & defender disagree on all
 	// steps >= R.
-	R []byte `protobuf:"bytes,2,opt,name=r,proto3" json:"r,omitempty"`
+	R uint64 `protobuf:"varint,6,opt,name=r,proto3" json:"r,omitempty"`
 	// Maps step numbers to asserted state hashes for the challenger.
-	AssertedState map[uint64][]byte `protobuf:"bytes,3,rep,name=asserted_state,json=assertedState,proto3" json:"asserted_state,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// Maps step numbers to asserted state hashes for the defender.
-	DefendedState map[uint64][]byte `protobuf:"bytes,4,rep,name=defended_state,json=defendedState,proto3" json:"defended_state,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	// Address of the challenger.
-	Challenger string `protobuf:"bytes,5,opt,name=challenger,proto3" json:"challenger,omitempty"`
-	// Block number preceding the challenged block.
-	BlockNumberN int64 `protobuf:"varint,6,opt,name=block_number_n,json=blockNumberN,proto3" json:"block_number_n,omitempty"`
+	AssertedStateHashes map[uint64][]byte `protobuf:"bytes,7,rep,name=asserted_state_hashes,json=assertedStateHashes,proto3" json:"asserted_state_hashes,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Maps step numbers to defended state hashes for the defender.
+	DefendedStateHashes map[uint64][]byte `protobuf:"bytes,8,rep,name=defended_state_hashes,json=defendedStateHashes,proto3" json:"defended_state_hashes,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *Challenge) Reset()         { *m = Challenge{} }
@@ -112,32 +115,18 @@ func (m *Challenge) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Challenge proto.InternalMessageInfo
 
-func (m *Challenge) GetL() []byte {
+func (m *Challenge) GetRollupName() string {
 	if m != nil {
-		return m.L
+		return m.RollupName
 	}
-	return nil
+	return ""
 }
 
-func (m *Challenge) GetR() []byte {
+func (m *Challenge) GetBlockHeight() int64 {
 	if m != nil {
-		return m.R
+		return m.BlockHeight
 	}
-	return nil
-}
-
-func (m *Challenge) GetAssertedState() map[uint64][]byte {
-	if m != nil {
-		return m.AssertedState
-	}
-	return nil
-}
-
-func (m *Challenge) GetDefendedState() map[uint64][]byte {
-	if m != nil {
-		return m.DefendedState
-	}
-	return nil
+	return 0
 }
 
 func (m *Challenge) GetChallenger() string {
@@ -147,9 +136,245 @@ func (m *Challenge) GetChallenger() string {
 	return ""
 }
 
-func (m *Challenge) GetBlockNumberN() int64 {
+func (m *Challenge) GetDefender() string {
 	if m != nil {
-		return m.BlockNumberN
+		return m.Defender
+	}
+	return ""
+}
+
+func (m *Challenge) GetL() uint64 {
+	if m != nil {
+		return m.L
+	}
+	return 0
+}
+
+func (m *Challenge) GetR() uint64 {
+	if m != nil {
+		return m.R
+	}
+	return 0
+}
+
+func (m *Challenge) GetAssertedStateHashes() map[uint64][]byte {
+	if m != nil {
+		return m.AssertedStateHashes
+	}
+	return nil
+}
+
+func (m *Challenge) GetDefendedStateHashes() map[uint64][]byte {
+	if m != nil {
+		return m.DefendedStateHashes
+	}
+	return nil
+}
+
+type State struct {
+	MemRoot        []byte   `protobuf:"bytes,1,opt,name=mem_root,json=memRoot,proto3" json:"mem_root,omitempty"`
+	PreimageKey    []byte   `protobuf:"bytes,2,opt,name=preimage_key,json=preimageKey,proto3" json:"preimage_key,omitempty"`
+	PreimageOffset uint32   `protobuf:"varint,3,opt,name=preimage_offset,json=preimageOffset,proto3" json:"preimage_offset,omitempty"`
+	Pc             uint32   `protobuf:"varint,4,opt,name=pc,proto3" json:"pc,omitempty"`
+	NextPc         uint32   `protobuf:"varint,5,opt,name=next_pc,json=nextPc,proto3" json:"next_pc,omitempty"`
+	Lo             uint32   `protobuf:"varint,6,opt,name=lo,proto3" json:"lo,omitempty"`
+	Hi             uint32   `protobuf:"varint,7,opt,name=hi,proto3" json:"hi,omitempty"`
+	Heap           uint32   `protobuf:"varint,8,opt,name=heap,proto3" json:"heap,omitempty"`
+	ExitCode       uint32   `protobuf:"varint,9,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
+	Exited         bool     `protobuf:"varint,10,opt,name=exited,proto3" json:"exited,omitempty"`
+	Step           uint64   `protobuf:"varint,11,opt,name=step,proto3" json:"step,omitempty"`
+	Registers      []uint32 `protobuf:"varint,12,rep,packed,name=registers,proto3" json:"registers,omitempty"`
+}
+
+func (m *State) Reset()         { *m = State{} }
+func (m *State) String() string { return proto.CompactTextString(m) }
+func (*State) ProtoMessage()    {}
+func (*State) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d997a6df5a7594b6, []int{2}
+}
+func (m *State) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *State) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_State.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *State) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_State.Merge(m, src)
+}
+func (m *State) XXX_Size() int {
+	return m.Size()
+}
+func (m *State) XXX_DiscardUnknown() {
+	xxx_messageInfo_State.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_State proto.InternalMessageInfo
+
+func (m *State) GetMemRoot() []byte {
+	if m != nil {
+		return m.MemRoot
+	}
+	return nil
+}
+
+func (m *State) GetPreimageKey() []byte {
+	if m != nil {
+		return m.PreimageKey
+	}
+	return nil
+}
+
+func (m *State) GetPreimageOffset() uint32 {
+	if m != nil {
+		return m.PreimageOffset
+	}
+	return 0
+}
+
+func (m *State) GetPc() uint32 {
+	if m != nil {
+		return m.Pc
+	}
+	return 0
+}
+
+func (m *State) GetNextPc() uint32 {
+	if m != nil {
+		return m.NextPc
+	}
+	return 0
+}
+
+func (m *State) GetLo() uint32 {
+	if m != nil {
+		return m.Lo
+	}
+	return 0
+}
+
+func (m *State) GetHi() uint32 {
+	if m != nil {
+		return m.Hi
+	}
+	return 0
+}
+
+func (m *State) GetHeap() uint32 {
+	if m != nil {
+		return m.Heap
+	}
+	return 0
+}
+
+func (m *State) GetExitCode() uint32 {
+	if m != nil {
+		return m.ExitCode
+	}
+	return 0
+}
+
+func (m *State) GetExited() bool {
+	if m != nil {
+		return m.Exited
+	}
+	return false
+}
+
+func (m *State) GetStep() uint64 {
+	if m != nil {
+		return m.Step
+	}
+	return 0
+}
+
+func (m *State) GetRegisters() []uint32 {
+	if m != nil {
+		return m.Registers
+	}
+	return nil
+}
+
+type Witness struct {
+	State          *State `protobuf:"bytes,1,opt,name=state,proto3" json:"state,omitempty"`
+	Proofs         []byte `protobuf:"bytes,2,opt,name=proofs,proto3" json:"proofs,omitempty"`
+	PreimageKey    []byte `protobuf:"bytes,3,opt,name=preimage_key,json=preimageKey,proto3" json:"preimage_key,omitempty"`
+	PreimageValue  []byte `protobuf:"bytes,4,opt,name=preimage_value,json=preimageValue,proto3" json:"preimage_value,omitempty"`
+	PreimageOffset uint32 `protobuf:"varint,5,opt,name=preimage_offset,json=preimageOffset,proto3" json:"preimage_offset,omitempty"`
+}
+
+func (m *Witness) Reset()         { *m = Witness{} }
+func (m *Witness) String() string { return proto.CompactTextString(m) }
+func (*Witness) ProtoMessage()    {}
+func (*Witness) Descriptor() ([]byte, []int) {
+	return fileDescriptor_d997a6df5a7594b6, []int{3}
+}
+func (m *Witness) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Witness) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Witness.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Witness) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Witness.Merge(m, src)
+}
+func (m *Witness) XXX_Size() int {
+	return m.Size()
+}
+func (m *Witness) XXX_DiscardUnknown() {
+	xxx_messageInfo_Witness.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Witness proto.InternalMessageInfo
+
+func (m *Witness) GetState() *State {
+	if m != nil {
+		return m.State
+	}
+	return nil
+}
+
+func (m *Witness) GetProofs() []byte {
+	if m != nil {
+		return m.Proofs
+	}
+	return nil
+}
+
+func (m *Witness) GetPreimageKey() []byte {
+	if m != nil {
+		return m.PreimageKey
+	}
+	return nil
+}
+
+func (m *Witness) GetPreimageValue() []byte {
+	if m != nil {
+		return m.PreimageValue
+	}
+	return nil
+}
+
+func (m *Witness) GetPreimageOffset() uint32 {
+	if m != nil {
+		return m.PreimageOffset
 	}
 	return 0
 }
@@ -157,8 +382,10 @@ func (m *Challenge) GetBlockNumberN() int64 {
 func init() {
 	proto.RegisterType((*Params)(nil), "finschia.or.settlement.v1.Params")
 	proto.RegisterType((*Challenge)(nil), "finschia.or.settlement.v1.Challenge")
-	proto.RegisterMapType((map[uint64][]byte)(nil), "finschia.or.settlement.v1.Challenge.AssertedStateEntry")
-	proto.RegisterMapType((map[uint64][]byte)(nil), "finschia.or.settlement.v1.Challenge.DefendedStateEntry")
+	proto.RegisterMapType((map[uint64][]byte)(nil), "finschia.or.settlement.v1.Challenge.AssertedStateHashesEntry")
+	proto.RegisterMapType((map[uint64][]byte)(nil), "finschia.or.settlement.v1.Challenge.DefendedStateHashesEntry")
+	proto.RegisterType((*State)(nil), "finschia.or.settlement.v1.State")
+	proto.RegisterType((*Witness)(nil), "finschia.or.settlement.v1.Witness")
 }
 
 func init() {
@@ -166,30 +393,47 @@ func init() {
 }
 
 var fileDescriptor_d997a6df5a7594b6 = []byte{
-	// 356 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xcf, 0x6a, 0xea, 0x40,
-	0x14, 0xc6, 0x1d, 0xa3, 0x72, 0x9d, 0xeb, 0x95, 0xcb, 0xe0, 0x22, 0xd7, 0x45, 0x08, 0x72, 0x17,
-	0xa1, 0xd0, 0x04, 0x5b, 0x68, 0x4b, 0x57, 0xfd, 0xbf, 0x14, 0x49, 0x77, 0x5d, 0x54, 0x26, 0xc9,
-	0x31, 0x8a, 0x93, 0x19, 0x99, 0x19, 0xa5, 0xbe, 0x45, 0x5f, 0xa5, 0x6f, 0xd1, 0xa5, 0xcb, 0x2e,
-	0x8b, 0xbe, 0x48, 0x49, 0x34, 0x12, 0x2a, 0x5d, 0xb8, 0x3b, 0xdf, 0x37, 0xe7, 0xfb, 0xcd, 0xcc,
-	0xe1, 0xe0, 0xa3, 0xe1, 0x98, 0xab, 0x70, 0x34, 0xa6, 0x9e, 0x90, 0x9e, 0x02, 0xad, 0x19, 0x24,
-	0xc0, 0xb5, 0x37, 0xef, 0x16, 0x94, 0x3b, 0x95, 0x42, 0x0b, 0xf2, 0x2f, 0xef, 0x75, 0x85, 0x74,
-	0x0b, 0xa7, 0xf3, 0x6e, 0xbb, 0x15, 0x8b, 0x58, 0x64, 0x5d, 0x5e, 0x5a, 0x6d, 0x02, 0x9d, 0x5f,
-	0xb8, 0xd6, 0xa7, 0x92, 0x26, 0xaa, 0xf3, 0x66, 0xe0, 0xfa, 0xed, 0x88, 0x32, 0x06, 0x3c, 0x06,
-	0xd2, 0xc0, 0x88, 0x99, 0xc8, 0x46, 0x4e, 0xc3, 0x47, 0x2c, 0x55, 0xd2, 0x2c, 0x6f, 0x94, 0x24,
-	0xcf, 0xb8, 0x49, 0x95, 0x02, 0xa9, 0x21, 0x1a, 0x28, 0x4d, 0x35, 0x98, 0x86, 0x6d, 0x38, 0xbf,
-	0x4f, 0xce, 0xdd, 0x1f, 0x6f, 0x77, 0x77, 0x64, 0xf7, 0x7a, 0x1b, 0x7d, 0x4c, 0x93, 0xf7, 0x5c,
-	0xcb, 0x85, 0xff, 0x87, 0x16, 0xbd, 0x94, 0x1f, 0xc1, 0x10, 0x78, 0xb4, 0xe3, 0x57, 0x0e, 0xe0,
-	0xdf, 0x6d, 0xa3, 0x45, 0x7e, 0x54, 0xf4, 0x88, 0x85, 0x71, 0x98, 0xb7, 0x4b, 0xb3, 0x6a, 0x23,
-	0xa7, 0xee, 0x17, 0x1c, 0xf2, 0x1f, 0x37, 0x03, 0x26, 0xc2, 0xc9, 0x80, 0xcf, 0x92, 0x00, 0xe4,
-	0x80, 0x9b, 0x35, 0x1b, 0x39, 0x86, 0xdf, 0xc8, 0xdc, 0x5e, 0x66, 0xf6, 0xda, 0x57, 0x98, 0xec,
-	0x7f, 0x85, 0xfc, 0xc5, 0xc6, 0x04, 0x16, 0xd9, 0xe4, 0x2a, 0x7e, 0x5a, 0x92, 0x16, 0xae, 0xce,
-	0x29, 0x9b, 0xc1, 0x76, 0x7e, 0x1b, 0x71, 0x59, 0xbe, 0x40, 0x29, 0x61, 0xff, 0xb1, 0x87, 0x10,
-	0x6e, 0xfa, 0xef, 0x2b, 0x0b, 0x2d, 0x57, 0x16, 0xfa, 0x5c, 0x59, 0xe8, 0x75, 0x6d, 0x95, 0x96,
-	0x6b, 0xab, 0xf4, 0xb1, 0xb6, 0x4a, 0x4f, 0x67, 0xf1, 0x58, 0x8f, 0x66, 0x81, 0x1b, 0x8a, 0xc4,
-	0x7b, 0xc8, 0xf7, 0x27, 0x1f, 0xdf, 0xb1, 0x8a, 0x26, 0xde, 0xcb, 0xb7, 0x75, 0xd2, 0x8b, 0x29,
-	0xa8, 0xa0, 0x96, 0xad, 0xc5, 0xe9, 0x57, 0x00, 0x00, 0x00, 0xff, 0xff, 0x50, 0xd8, 0x95, 0x89,
-	0x75, 0x02, 0x00, 0x00,
+	// 625 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xdd, 0x6a, 0xd4, 0x40,
+	0x14, 0x6e, 0xf6, 0x37, 0x7b, 0x76, 0xb7, 0xca, 0xf8, 0x37, 0xad, 0x12, 0xe3, 0x82, 0xb8, 0x08,
+	0x66, 0x69, 0x85, 0x22, 0x82, 0x17, 0x5a, 0x2d, 0x05, 0x41, 0xcb, 0x08, 0x0a, 0xde, 0x84, 0x34,
+	0x39, 0xbb, 0x09, 0x4d, 0x32, 0x71, 0x66, 0x5a, 0xba, 0x6f, 0xe1, 0x0b, 0xf8, 0x12, 0x3e, 0x85,
+	0x17, 0x5e, 0xf4, 0xd2, 0x4b, 0x69, 0x5f, 0x44, 0x66, 0xb2, 0xd9, 0x96, 0x6e, 0x57, 0xe8, 0xdd,
+	0xf9, 0xbe, 0x73, 0xe6, 0x3b, 0x33, 0xe7, 0x7c, 0x0c, 0x3c, 0x1d, 0x27, 0xb9, 0x0c, 0xe3, 0x24,
+	0x18, 0x71, 0x31, 0x92, 0xa8, 0x54, 0x8a, 0x19, 0xe6, 0x6a, 0x74, 0xb4, 0x71, 0x01, 0x79, 0x85,
+	0xe0, 0x8a, 0x93, 0xb5, 0xaa, 0xd6, 0xe3, 0xc2, 0xbb, 0x90, 0x3d, 0xda, 0x18, 0xd8, 0xd0, 0xda,
+	0x0b, 0x44, 0x90, 0xc9, 0xc1, 0x8f, 0x06, 0x74, 0xb6, 0xe3, 0x20, 0x4d, 0x31, 0x9f, 0x20, 0x79,
+	0x08, 0x5d, 0xc1, 0xd3, 0xf4, 0xb0, 0xf0, 0xf3, 0x20, 0x43, 0x6a, 0xb9, 0xd6, 0xb0, 0xc3, 0xa0,
+	0xa4, 0x3e, 0x04, 0x19, 0x92, 0x47, 0xd0, 0xdb, 0x4f, 0x79, 0x78, 0xe0, 0xc7, 0x98, 0x4c, 0x62,
+	0x45, 0x6b, 0xae, 0x35, 0xac, 0xb3, 0xae, 0xe1, 0x76, 0x0d, 0x45, 0x1c, 0x80, 0xb0, 0x12, 0x14,
+	0xb4, 0x5e, 0x4a, 0x9c, 0x33, 0x64, 0x1d, 0xec, 0x08, 0xc7, 0x98, 0x47, 0x28, 0x68, 0xc3, 0x64,
+	0xe7, 0x98, 0xf4, 0xc0, 0x4a, 0x69, 0xd3, 0xb5, 0x86, 0x0d, 0x66, 0xa5, 0x1a, 0x09, 0xda, 0x2a,
+	0x91, 0x20, 0xdf, 0xe0, 0x4e, 0x20, 0x25, 0x0a, 0x85, 0x91, 0x2f, 0x55, 0xa0, 0xd0, 0x8f, 0x03,
+	0x19, 0xa3, 0xa4, 0x6d, 0xb7, 0x3e, 0xec, 0x6e, 0xbe, 0xf2, 0x96, 0x3e, 0xd7, 0x9b, 0x3f, 0xd0,
+	0x7b, 0x3d, 0x53, 0xf8, 0xa4, 0x05, 0x76, 0xcd, 0xf9, 0x77, 0xb9, 0x12, 0x53, 0x76, 0x2b, 0x58,
+	0xcc, 0xe8, 0x96, 0xb3, 0xab, 0x5d, 0x6a, 0x69, 0x5f, 0xa3, 0xe5, 0xdb, 0x99, 0xc2, 0x62, 0xcb,
+	0x68, 0x31, 0xb3, 0xbe, 0x03, 0x74, 0xd9, 0x1d, 0xc9, 0x4d, 0xa8, 0x1f, 0xe0, 0xd4, 0x6c, 0xa5,
+	0xc1, 0x74, 0x48, 0x6e, 0x43, 0xf3, 0x28, 0x48, 0x0f, 0xd1, 0xec, 0xa1, 0xc7, 0x4a, 0xf0, 0xb2,
+	0xf6, 0xc2, 0xd2, 0x3a, 0xcb, 0x1a, 0x5f, 0x47, 0x67, 0xf0, 0xb3, 0x06, 0x4d, 0x23, 0x40, 0xd6,
+	0xc0, 0xce, 0x30, 0xf3, 0x05, 0xe7, 0xca, 0x1c, 0xed, 0xb1, 0x76, 0x86, 0x19, 0xe3, 0x5c, 0x69,
+	0x57, 0x14, 0x02, 0x93, 0x2c, 0x98, 0xa0, 0xaf, 0x95, 0x4b, 0x95, 0x6e, 0xc5, 0xbd, 0xc7, 0x29,
+	0x79, 0x02, 0x37, 0xe6, 0x25, 0x7c, 0x3c, 0x96, 0xa8, 0x8c, 0x35, 0xfa, 0x6c, 0xb5, 0xa2, 0x3f,
+	0x1a, 0x96, 0xac, 0x42, 0xad, 0x08, 0x8d, 0x31, 0xfa, 0xac, 0x56, 0x84, 0xe4, 0x1e, 0xb4, 0x73,
+	0x3c, 0x56, 0x7e, 0x11, 0x1a, 0x63, 0xf4, 0x59, 0x4b, 0xc3, 0xbd, 0x50, 0x17, 0xa6, 0xdc, 0xd8,
+	0xa3, 0xcf, 0x6a, 0x29, 0xd7, 0x38, 0x4e, 0x68, 0xbb, 0xc4, 0x71, 0x42, 0x08, 0x34, 0x62, 0x0c,
+	0x0a, 0x6a, 0x1b, 0xc6, 0xc4, 0xe4, 0x3e, 0x74, 0xf0, 0x38, 0x51, 0x7e, 0xc8, 0x23, 0xa4, 0x1d,
+	0x93, 0xb0, 0x35, 0xb1, 0xcd, 0x23, 0x24, 0x77, 0xa1, 0xa5, 0x63, 0x8c, 0x28, 0xb8, 0xd6, 0xd0,
+	0x66, 0x33, 0xa4, 0x85, 0xa4, 0xc2, 0x82, 0x76, 0xcd, 0xbc, 0x4c, 0x4c, 0x1e, 0x40, 0x47, 0xe0,
+	0x24, 0x91, 0x0a, 0x85, 0xa4, 0x3d, 0xb7, 0x3e, 0xec, 0xb3, 0x73, 0x62, 0xf0, 0xdb, 0x82, 0xf6,
+	0x97, 0x44, 0xe5, 0x28, 0x25, 0xd9, 0x82, 0xa6, 0xb1, 0x8e, 0x99, 0x59, 0x77, 0xd3, 0xfd, 0x8f,
+	0x67, 0xcc, 0x9c, 0x59, 0x59, 0xae, 0x6f, 0x53, 0x08, 0xce, 0xc7, 0x72, 0x36, 0xcd, 0x19, 0x5a,
+	0x98, 0x75, 0x7d, 0x71, 0xd6, 0x8f, 0x61, 0x3e, 0x54, 0xbf, 0x5c, 0x6b, 0xc3, 0x14, 0xf5, 0x2b,
+	0xf6, 0xb3, 0x26, 0xaf, 0x5a, 0x49, 0xf3, 0xaa, 0x95, 0xbc, 0xd9, 0xfb, 0x75, 0xea, 0x58, 0x27,
+	0xa7, 0x8e, 0xf5, 0xf7, 0xd4, 0xb1, 0xbe, 0x9f, 0x39, 0x2b, 0x27, 0x67, 0xce, 0xca, 0x9f, 0x33,
+	0x67, 0xe5, 0xeb, 0xd6, 0x24, 0x51, 0xf1, 0xe1, 0xbe, 0x17, 0xf2, 0x6c, 0xb4, 0x53, 0xfd, 0x4c,
+	0xd5, 0x03, 0x9f, 0xc9, 0xe8, 0x60, 0x74, 0x7c, 0xe9, 0xa3, 0x52, 0xd3, 0x02, 0xe5, 0x7e, 0xcb,
+	0xfc, 0x50, 0xcf, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x11, 0xa4, 0xff, 0x35, 0xcf, 0x04, 0x00,
+	0x00,
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -235,67 +479,243 @@ func (m *Challenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.BlockNumberN != 0 {
-		i = encodeVarintSettlement(dAtA, i, uint64(m.BlockNumberN))
+	if len(m.DefendedStateHashes) > 0 {
+		for k := range m.DefendedStateHashes {
+			v := m.DefendedStateHashes[k]
+			baseI := i
+			if len(v) > 0 {
+				i -= len(v)
+				copy(dAtA[i:], v)
+				i = encodeVarintSettlement(dAtA, i, uint64(len(v)))
+				i--
+				dAtA[i] = 0x12
+			}
+			i = encodeVarintSettlement(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintSettlement(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x42
+		}
+	}
+	if len(m.AssertedStateHashes) > 0 {
+		for k := range m.AssertedStateHashes {
+			v := m.AssertedStateHashes[k]
+			baseI := i
+			if len(v) > 0 {
+				i -= len(v)
+				copy(dAtA[i:], v)
+				i = encodeVarintSettlement(dAtA, i, uint64(len(v)))
+				i--
+				dAtA[i] = 0x12
+			}
+			i = encodeVarintSettlement(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintSettlement(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3a
+		}
+	}
+	if m.R != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.R))
 		i--
 		dAtA[i] = 0x30
+	}
+	if m.L != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.L))
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.Defender) > 0 {
+		i -= len(m.Defender)
+		copy(dAtA[i:], m.Defender)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.Defender)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if len(m.Challenger) > 0 {
 		i -= len(m.Challenger)
 		copy(dAtA[i:], m.Challenger)
 		i = encodeVarintSettlement(dAtA, i, uint64(len(m.Challenger)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x1a
 	}
-	if len(m.DefendedState) > 0 {
-		for k := range m.DefendedState {
-			v := m.DefendedState[k]
-			baseI := i
-			if len(v) > 0 {
-				i -= len(v)
-				copy(dAtA[i:], v)
-				i = encodeVarintSettlement(dAtA, i, uint64(len(v)))
-				i--
-				dAtA[i] = 0x12
+	if m.BlockHeight != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.BlockHeight))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.RollupName) > 0 {
+		i -= len(m.RollupName)
+		copy(dAtA[i:], m.RollupName)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.RollupName)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *State) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *State) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *State) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Registers) > 0 {
+		dAtA2 := make([]byte, len(m.Registers)*10)
+		var j1 int
+		for _, num := range m.Registers {
+			for num >= 1<<7 {
+				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
 			}
-			i = encodeVarintSettlement(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintSettlement(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x22
+			dAtA2[j1] = uint8(num)
+			j1++
 		}
+		i -= j1
+		copy(dAtA[i:], dAtA2[:j1])
+		i = encodeVarintSettlement(dAtA, i, uint64(j1))
+		i--
+		dAtA[i] = 0x62
 	}
-	if len(m.AssertedState) > 0 {
-		for k := range m.AssertedState {
-			v := m.AssertedState[k]
-			baseI := i
-			if len(v) > 0 {
-				i -= len(v)
-				copy(dAtA[i:], v)
-				i = encodeVarintSettlement(dAtA, i, uint64(len(v)))
-				i--
-				dAtA[i] = 0x12
-			}
-			i = encodeVarintSettlement(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintSettlement(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1a
+	if m.Step != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.Step))
+		i--
+		dAtA[i] = 0x58
+	}
+	if m.Exited {
+		i--
+		if m.Exited {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
 		}
+		i--
+		dAtA[i] = 0x50
 	}
-	if len(m.R) > 0 {
-		i -= len(m.R)
-		copy(dAtA[i:], m.R)
-		i = encodeVarintSettlement(dAtA, i, uint64(len(m.R)))
+	if m.ExitCode != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.ExitCode))
+		i--
+		dAtA[i] = 0x48
+	}
+	if m.Heap != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.Heap))
+		i--
+		dAtA[i] = 0x40
+	}
+	if m.Hi != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.Hi))
+		i--
+		dAtA[i] = 0x38
+	}
+	if m.Lo != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.Lo))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.NextPc != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.NextPc))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.Pc != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.Pc))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.PreimageOffset != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.PreimageOffset))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.PreimageKey) > 0 {
+		i -= len(m.PreimageKey)
+		copy(dAtA[i:], m.PreimageKey)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.PreimageKey)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.L) > 0 {
-		i -= len(m.L)
-		copy(dAtA[i:], m.L)
-		i = encodeVarintSettlement(dAtA, i, uint64(len(m.L)))
+	if len(m.MemRoot) > 0 {
+		i -= len(m.MemRoot)
+		copy(dAtA[i:], m.MemRoot)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.MemRoot)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Witness) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Witness) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Witness) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.PreimageOffset != 0 {
+		i = encodeVarintSettlement(dAtA, i, uint64(m.PreimageOffset))
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.PreimageValue) > 0 {
+		i -= len(m.PreimageValue)
+		copy(dAtA[i:], m.PreimageValue)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.PreimageValue)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.PreimageKey) > 0 {
+		i -= len(m.PreimageKey)
+		copy(dAtA[i:], m.PreimageKey)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.PreimageKey)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Proofs) > 0 {
+		i -= len(m.Proofs)
+		copy(dAtA[i:], m.Proofs)
+		i = encodeVarintSettlement(dAtA, i, uint64(len(m.Proofs)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.State != nil {
+		{
+			size, err := m.State.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintSettlement(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -328,44 +748,129 @@ func (m *Challenge) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.L)
+	l = len(m.RollupName)
 	if l > 0 {
 		n += 1 + l + sovSettlement(uint64(l))
 	}
-	l = len(m.R)
-	if l > 0 {
-		n += 1 + l + sovSettlement(uint64(l))
-	}
-	if len(m.AssertedState) > 0 {
-		for k, v := range m.AssertedState {
-			_ = k
-			_ = v
-			l = 0
-			if len(v) > 0 {
-				l = 1 + len(v) + sovSettlement(uint64(len(v)))
-			}
-			mapEntrySize := 1 + sovSettlement(uint64(k)) + l
-			n += mapEntrySize + 1 + sovSettlement(uint64(mapEntrySize))
-		}
-	}
-	if len(m.DefendedState) > 0 {
-		for k, v := range m.DefendedState {
-			_ = k
-			_ = v
-			l = 0
-			if len(v) > 0 {
-				l = 1 + len(v) + sovSettlement(uint64(len(v)))
-			}
-			mapEntrySize := 1 + sovSettlement(uint64(k)) + l
-			n += mapEntrySize + 1 + sovSettlement(uint64(mapEntrySize))
-		}
+	if m.BlockHeight != 0 {
+		n += 1 + sovSettlement(uint64(m.BlockHeight))
 	}
 	l = len(m.Challenger)
 	if l > 0 {
 		n += 1 + l + sovSettlement(uint64(l))
 	}
-	if m.BlockNumberN != 0 {
-		n += 1 + sovSettlement(uint64(m.BlockNumberN))
+	l = len(m.Defender)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	if m.L != 0 {
+		n += 1 + sovSettlement(uint64(m.L))
+	}
+	if m.R != 0 {
+		n += 1 + sovSettlement(uint64(m.R))
+	}
+	if len(m.AssertedStateHashes) > 0 {
+		for k, v := range m.AssertedStateHashes {
+			_ = k
+			_ = v
+			l = 0
+			if len(v) > 0 {
+				l = 1 + len(v) + sovSettlement(uint64(len(v)))
+			}
+			mapEntrySize := 1 + sovSettlement(uint64(k)) + l
+			n += mapEntrySize + 1 + sovSettlement(uint64(mapEntrySize))
+		}
+	}
+	if len(m.DefendedStateHashes) > 0 {
+		for k, v := range m.DefendedStateHashes {
+			_ = k
+			_ = v
+			l = 0
+			if len(v) > 0 {
+				l = 1 + len(v) + sovSettlement(uint64(len(v)))
+			}
+			mapEntrySize := 1 + sovSettlement(uint64(k)) + l
+			n += mapEntrySize + 1 + sovSettlement(uint64(mapEntrySize))
+		}
+	}
+	return n
+}
+
+func (m *State) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.MemRoot)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	l = len(m.PreimageKey)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	if m.PreimageOffset != 0 {
+		n += 1 + sovSettlement(uint64(m.PreimageOffset))
+	}
+	if m.Pc != 0 {
+		n += 1 + sovSettlement(uint64(m.Pc))
+	}
+	if m.NextPc != 0 {
+		n += 1 + sovSettlement(uint64(m.NextPc))
+	}
+	if m.Lo != 0 {
+		n += 1 + sovSettlement(uint64(m.Lo))
+	}
+	if m.Hi != 0 {
+		n += 1 + sovSettlement(uint64(m.Hi))
+	}
+	if m.Heap != 0 {
+		n += 1 + sovSettlement(uint64(m.Heap))
+	}
+	if m.ExitCode != 0 {
+		n += 1 + sovSettlement(uint64(m.ExitCode))
+	}
+	if m.Exited {
+		n += 2
+	}
+	if m.Step != 0 {
+		n += 1 + sovSettlement(uint64(m.Step))
+	}
+	if len(m.Registers) > 0 {
+		l = 0
+		for _, e := range m.Registers {
+			l += sovSettlement(uint64(e))
+		}
+		n += 1 + sovSettlement(uint64(l)) + l
+	}
+	return n
+}
+
+func (m *Witness) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.State != nil {
+		l = m.State.Size()
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	l = len(m.Proofs)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	l = len(m.PreimageKey)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	l = len(m.PreimageValue)
+	if l > 0 {
+		n += 1 + l + sovSettlement(uint64(l))
+	}
+	if m.PreimageOffset != 0 {
+		n += 1 + sovSettlement(uint64(m.PreimageOffset))
 	}
 	return n
 }
@@ -457,9 +962,9 @@ func (m *Challenge) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field L", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RollupName", wireType)
 			}
-			var byteLen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowSettlement
@@ -469,31 +974,29 @@ func (m *Challenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthSettlement
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthSettlement
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.L = append(m.L[:0], dAtA[iNdEx:postIndex]...)
-			if m.L == nil {
-				m.L = []byte{}
-			}
+			m.RollupName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field R", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockHeight", wireType)
 			}
-			var byteLen int
+			m.BlockHeight = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowSettlement
@@ -503,255 +1006,12 @@ func (m *Challenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				m.BlockHeight |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.R = append(m.R[:0], dAtA[iNdEx:postIndex]...)
-			if m.R == nil {
-				m.R = []byte{}
-			}
-			iNdEx = postIndex
 		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AssertedState", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowSettlement
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.AssertedState == nil {
-				m.AssertedState = make(map[uint64][]byte)
-			}
-			var mapkey uint64
-			mapvalue := []byte{}
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSettlement
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSettlement
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-				} else if fieldNum == 2 {
-					var mapbyteLen uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSettlement
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapbyteLen |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intMapbyteLen := int(mapbyteLen)
-					if intMapbyteLen < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					postbytesIndex := iNdEx + intMapbyteLen
-					if postbytesIndex < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					if postbytesIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = make([]byte, mapbyteLen)
-					copy(mapvalue, dAtA[iNdEx:postbytesIndex])
-					iNdEx = postbytesIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := skipSettlement(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.AssertedState[mapkey] = mapvalue
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field DefendedState", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowSettlement
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthSettlement
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.DefendedState == nil {
-				m.DefendedState = make(map[uint64][]byte)
-			}
-			var mapkey uint64
-			mapvalue := []byte{}
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowSettlement
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSettlement
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-				} else if fieldNum == 2 {
-					var mapbyteLen uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowSettlement
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapbyteLen |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intMapbyteLen := int(mapbyteLen)
-					if intMapbyteLen < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					postbytesIndex := iNdEx + intMapbyteLen
-					if postbytesIndex < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					if postbytesIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = make([]byte, mapbyteLen)
-					copy(mapvalue, dAtA[iNdEx:postbytesIndex])
-					iNdEx = postbytesIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := skipSettlement(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return ErrInvalidLengthSettlement
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.DefendedState[mapkey] = mapvalue
-			iNdEx = postIndex
-		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Challenger", wireType)
 			}
@@ -783,11 +1043,11 @@ func (m *Challenge) Unmarshal(dAtA []byte) error {
 			}
 			m.Challenger = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BlockNumberN", wireType)
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Defender", wireType)
 			}
-			m.BlockNumberN = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowSettlement
@@ -797,7 +1057,859 @@ func (m *Challenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.BlockNumberN |= int64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Defender = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field L", wireType)
+			}
+			m.L = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.L |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field R", wireType)
+			}
+			m.R = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.R |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AssertedStateHashes", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.AssertedStateHashes == nil {
+				m.AssertedStateHashes = make(map[uint64][]byte)
+			}
+			var mapkey uint64
+			mapvalue := []byte{}
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowSettlement
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowSettlement
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+				} else if fieldNum == 2 {
+					var mapbyteLen uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowSettlement
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapbyteLen |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intMapbyteLen := int(mapbyteLen)
+					if intMapbyteLen < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					postbytesIndex := iNdEx + intMapbyteLen
+					if postbytesIndex < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					if postbytesIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = make([]byte, mapbyteLen)
+					copy(mapvalue, dAtA[iNdEx:postbytesIndex])
+					iNdEx = postbytesIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipSettlement(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.AssertedStateHashes[mapkey] = mapvalue
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefendedStateHashes", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.DefendedStateHashes == nil {
+				m.DefendedStateHashes = make(map[uint64][]byte)
+			}
+			var mapkey uint64
+			mapvalue := []byte{}
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowSettlement
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowSettlement
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+				} else if fieldNum == 2 {
+					var mapbyteLen uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowSettlement
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapbyteLen |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intMapbyteLen := int(mapbyteLen)
+					if intMapbyteLen < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					postbytesIndex := iNdEx + intMapbyteLen
+					if postbytesIndex < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					if postbytesIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = make([]byte, mapbyteLen)
+					copy(mapvalue, dAtA[iNdEx:postbytesIndex])
+					iNdEx = postbytesIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipSettlement(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthSettlement
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.DefendedStateHashes[mapkey] = mapvalue
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSettlement(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *State) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSettlement
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: State: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: State: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MemRoot", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MemRoot = append(m.MemRoot[:0], dAtA[iNdEx:postIndex]...)
+			if m.MemRoot == nil {
+				m.MemRoot = []byte{}
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreimageKey", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PreimageKey = append(m.PreimageKey[:0], dAtA[iNdEx:postIndex]...)
+			if m.PreimageKey == nil {
+				m.PreimageKey = []byte{}
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreimageOffset", wireType)
+			}
+			m.PreimageOffset = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PreimageOffset |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pc", wireType)
+			}
+			m.Pc = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Pc |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NextPc", wireType)
+			}
+			m.NextPc = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.NextPc |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Lo", wireType)
+			}
+			m.Lo = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Lo |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Hi", wireType)
+			}
+			m.Hi = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Hi |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Heap", wireType)
+			}
+			m.Heap = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Heap |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 9:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ExitCode", wireType)
+			}
+			m.ExitCode = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ExitCode |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 10:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Exited", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Exited = bool(v != 0)
+		case 11:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Step", wireType)
+			}
+			m.Step = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Step |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 12:
+			if wireType == 0 {
+				var v uint32
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowSettlement
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= uint32(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Registers = append(m.Registers, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowSettlement
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthSettlement
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthSettlement
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.Registers) == 0 {
+					m.Registers = make([]uint32, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint32
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowSettlement
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= uint32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.Registers = append(m.Registers, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Registers", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipSettlement(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Witness) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowSettlement
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Witness: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Witness: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.State == nil {
+				m.State = &State{}
+			}
+			if err := m.State.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Proofs", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Proofs = append(m.Proofs[:0], dAtA[iNdEx:postIndex]...)
+			if m.Proofs == nil {
+				m.Proofs = []byte{}
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreimageKey", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PreimageKey = append(m.PreimageKey[:0], dAtA[iNdEx:postIndex]...)
+			if m.PreimageKey == nil {
+				m.PreimageKey = []byte{}
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreimageValue", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthSettlement
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PreimageValue = append(m.PreimageValue[:0], dAtA[iNdEx:postIndex]...)
+			if m.PreimageValue == nil {
+				m.PreimageValue = []byte{}
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PreimageOffset", wireType)
+			}
+			m.PreimageOffset = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowSettlement
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PreimageOffset |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

@@ -18,26 +18,14 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 
 var _ types.MsgServer = msgServer{}
 
-func (s msgServer) InitiateChallenge(ctx context.Context, req *types.MsgInitiateChallenge) (*types.MsgInitiateChallengeResponse, error) {
+func (s msgServer) StartChallenge(c context.Context, req *types.MsgStartChallenge) (*types.MsgStartChallengeResponse, error) {
 	panic("implement me")
 }
 
-func (s msgServer) ProposeState(ctx context.Context, req *types.MsgProposeState) (*types.MsgProposeStateResponse, error) {
+func (s msgServer) NsectChallenge(c context.Context, req *types.MsgNsectChallenge) (*types.MsgNsectChallengeResponse, error) {
 	panic("implement me")
 }
 
-func (s msgServer) RespondState(ctx context.Context, req *types.MsgRespondState) (*types.MsgRespondStateResponse, error) {
-	panic("implement me")
-}
-
-func (s msgServer) ConfirmStateTransition(ctx context.Context, req *types.MsgConfirmStateTransition) (*types.MsgConfirmStateTransitionResponse, error) {
-	panic("implement me")
-}
-
-func (s msgServer) DenyStateTransition(ctx context.Context, req *types.MsgDenyStateTransition) (*types.MsgDenyStateTransitionResponse, error) {
-	panic("implement me")
-}
-
-func (s msgServer) AddTrieNode(ctx context.Context, req *types.MsgAddTrieNode) (*types.MsgAddTrieNodeResponse, error) {
+func (s msgServer) FinishChallenge(c context.Context, req *types.MsgFinishChallenge) (*types.MsgFinishChallengeResponse, error) {
 	panic("implement me")
 }

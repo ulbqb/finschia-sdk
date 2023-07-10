@@ -25,36 +25,33 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(NewTxCmdInitiateChallenge())
-	cmd.AddCommand(NewTxCmdProposeState())
-	cmd.AddCommand(NewTxCmdRespondState())
-	cmd.AddCommand(NewTxCmdConfirmStateTransition())
-	cmd.AddCommand(NewTxCmdDenyStateTransition())
-	cmd.AddCommand(NewTxCmdAddTrieNode())
+	cmd.AddCommand(NewTxCmdStartChallenge())
+	cmd.AddCommand(NewTxCmdNsectChallenge())
+	cmd.AddCommand(NewTxCmdFinishChallenge())
 
 	return cmd
 }
 
-func NewTxCmdInitiateChallenge() *cobra.Command {
-	panic("implement me")
+func NewTxCmdStartChallenge() *cobra.Command {
+	return &cobra.Command{
+		RunE: func(cmd *cobra.Command, args []string) error {
+			panic("implement me")
+		},
+	}
 }
 
-func NewTxCmdProposeState() *cobra.Command {
-	panic("implement me")
+func NewTxCmdNsectChallenge() *cobra.Command {
+	return &cobra.Command{
+		RunE: func(cmd *cobra.Command, args []string) error {
+			panic("implement me")
+		},
+	}
 }
 
-func NewTxCmdRespondState() *cobra.Command {
-	panic("implement me")
-}
-
-func NewTxCmdConfirmStateTransition() *cobra.Command {
-	panic("implement me")
-}
-
-func NewTxCmdDenyStateTransition() *cobra.Command {
-	panic("implement me")
-}
-
-func NewTxCmdAddTrieNode() *cobra.Command {
-	panic("implement me")
+func NewTxCmdFinishChallenge() *cobra.Command {
+	return &cobra.Command{
+		RunE: func(cmd *cobra.Command, args []string) error {
+			panic("implement me")
+		},
+	}
 }

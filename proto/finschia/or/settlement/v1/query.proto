@@ -17,7 +17,7 @@ service Query {
 }
 
 message QueryChallengeRequest {
-  int64 challenge_id = 1;
+  string challenge_id = 1;
 }
 
 message QueryChallengeResponse {

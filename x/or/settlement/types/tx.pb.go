@@ -27,26 +27,26 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type MsgInitiateChallenge struct {
-	BlockNumberN     int64  `protobuf:"varint,1,opt,name=block_number_n,json=blockNumberN,proto3" json:"block_number_n,omitempty"`
-	BlockHeaderNp1   []byte `protobuf:"bytes,2,opt,name=block_header_np1,json=blockHeaderNp1,proto3" json:"block_header_np1,omitempty"`
-	AssertionRoot    []byte `protobuf:"bytes,3,opt,name=assertion_root,json=assertionRoot,proto3" json:"assertion_root,omitempty"`
-	FinalSystemState []byte `protobuf:"bytes,4,opt,name=final_system_state,json=finalSystemState,proto3" json:"final_system_state,omitempty"`
-	StepCount        uint64 `protobuf:"varint,5,opt,name=step_count,json=stepCount,proto3" json:"step_count,omitempty"`
+type MsgStartChallenge struct {
+	From        string `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	To          string `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
+	RollupName  string `protobuf:"bytes,3,opt,name=rollup_name,json=rollupName,proto3" json:"rollup_name,omitempty"`
+	BlockHeight int64  `protobuf:"varint,4,opt,name=block_height,json=blockHeight,proto3" json:"block_height,omitempty"`
+	StepCount   uint64 `protobuf:"varint,5,opt,name=step_count,json=stepCount,proto3" json:"step_count,omitempty"`
 }
 
-func (m *MsgInitiateChallenge) Reset()         { *m = MsgInitiateChallenge{} }
-func (m *MsgInitiateChallenge) String() string { return proto.CompactTextString(m) }
-func (*MsgInitiateChallenge) ProtoMessage()    {}
-func (*MsgInitiateChallenge) Descriptor() ([]byte, []int) {
+func (m *MsgStartChallenge) Reset()         { *m = MsgStartChallenge{} }
+func (m *MsgStartChallenge) String() string { return proto.CompactTextString(m) }
+func (*MsgStartChallenge) ProtoMessage()    {}
+func (*MsgStartChallenge) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{0}
 }
-func (m *MsgInitiateChallenge) XXX_Unmarshal(b []byte) error {
+func (m *MsgStartChallenge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgInitiateChallenge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgStartChallenge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgInitiateChallenge.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgStartChallenge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -56,69 +56,69 @@ func (m *MsgInitiateChallenge) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *MsgInitiateChallenge) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgInitiateChallenge.Merge(m, src)
+func (m *MsgStartChallenge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgStartChallenge.Merge(m, src)
 }
-func (m *MsgInitiateChallenge) XXX_Size() int {
+func (m *MsgStartChallenge) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgInitiateChallenge) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgInitiateChallenge.DiscardUnknown(m)
+func (m *MsgStartChallenge) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgStartChallenge.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgInitiateChallenge proto.InternalMessageInfo
+var xxx_messageInfo_MsgStartChallenge proto.InternalMessageInfo
 
-func (m *MsgInitiateChallenge) GetBlockNumberN() int64 {
+func (m *MsgStartChallenge) GetFrom() string {
 	if m != nil {
-		return m.BlockNumberN
+		return m.From
+	}
+	return ""
+}
+
+func (m *MsgStartChallenge) GetTo() string {
+	if m != nil {
+		return m.To
+	}
+	return ""
+}
+
+func (m *MsgStartChallenge) GetRollupName() string {
+	if m != nil {
+		return m.RollupName
+	}
+	return ""
+}
+
+func (m *MsgStartChallenge) GetBlockHeight() int64 {
+	if m != nil {
+		return m.BlockHeight
 	}
 	return 0
 }
 
-func (m *MsgInitiateChallenge) GetBlockHeaderNp1() []byte {
-	if m != nil {
-		return m.BlockHeaderNp1
-	}
-	return nil
-}
-
-func (m *MsgInitiateChallenge) GetAssertionRoot() []byte {
-	if m != nil {
-		return m.AssertionRoot
-	}
-	return nil
-}
-
-func (m *MsgInitiateChallenge) GetFinalSystemState() []byte {
-	if m != nil {
-		return m.FinalSystemState
-	}
-	return nil
-}
-
-func (m *MsgInitiateChallenge) GetStepCount() uint64 {
+func (m *MsgStartChallenge) GetStepCount() uint64 {
 	if m != nil {
 		return m.StepCount
 	}
 	return 0
 }
 
-type MsgInitiateChallengeResponse struct {
-	ChallengeId uint64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+type MsgStartChallengeResponse struct {
+	ChallengeId string `protobuf:"bytes,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
 }
 
-func (m *MsgInitiateChallengeResponse) Reset()         { *m = MsgInitiateChallengeResponse{} }
-func (m *MsgInitiateChallengeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgInitiateChallengeResponse) ProtoMessage()    {}
-func (*MsgInitiateChallengeResponse) Descriptor() ([]byte, []int) {
+func (m *MsgStartChallengeResponse) Reset()         { *m = MsgStartChallengeResponse{} }
+func (m *MsgStartChallengeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgStartChallengeResponse) ProtoMessage()    {}
+func (*MsgStartChallengeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{1}
 }
-func (m *MsgInitiateChallengeResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgStartChallengeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgInitiateChallengeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgStartChallengeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgInitiateChallengeResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgStartChallengeResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -128,42 +128,43 @@ func (m *MsgInitiateChallengeResponse) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *MsgInitiateChallengeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgInitiateChallengeResponse.Merge(m, src)
+func (m *MsgStartChallengeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgStartChallengeResponse.Merge(m, src)
 }
-func (m *MsgInitiateChallengeResponse) XXX_Size() int {
+func (m *MsgStartChallengeResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgInitiateChallengeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgInitiateChallengeResponse.DiscardUnknown(m)
+func (m *MsgStartChallengeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgStartChallengeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgInitiateChallengeResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgStartChallengeResponse proto.InternalMessageInfo
 
-func (m *MsgInitiateChallengeResponse) GetChallengeId() uint64 {
+func (m *MsgStartChallengeResponse) GetChallengeId() string {
 	if m != nil {
 		return m.ChallengeId
 	}
-	return 0
+	return ""
 }
 
-type MsgProposeState struct {
-	ChallengeId uint64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
-	StateHash   []byte `protobuf:"bytes,2,opt,name=state_hash,json=stateHash,proto3" json:"state_hash,omitempty"`
+type MsgNsectChallenge struct {
+	From        string   `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	ChallengeId string   `protobuf:"bytes,2,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+	StateHashes [][]byte `protobuf:"bytes,3,rep,name=state_hashes,json=stateHashes,proto3" json:"state_hashes,omitempty"`
 }
 
-func (m *MsgProposeState) Reset()         { *m = MsgProposeState{} }
-func (m *MsgProposeState) String() string { return proto.CompactTextString(m) }
-func (*MsgProposeState) ProtoMessage()    {}
-func (*MsgProposeState) Descriptor() ([]byte, []int) {
+func (m *MsgNsectChallenge) Reset()         { *m = MsgNsectChallenge{} }
+func (m *MsgNsectChallenge) String() string { return proto.CompactTextString(m) }
+func (*MsgNsectChallenge) ProtoMessage()    {}
+func (*MsgNsectChallenge) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{2}
 }
-func (m *MsgProposeState) XXX_Unmarshal(b []byte) error {
+func (m *MsgNsectChallenge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgProposeState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNsectChallenge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgProposeState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNsectChallenge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -173,47 +174,54 @@ func (m *MsgProposeState) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *MsgProposeState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgProposeState.Merge(m, src)
+func (m *MsgNsectChallenge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNsectChallenge.Merge(m, src)
 }
-func (m *MsgProposeState) XXX_Size() int {
+func (m *MsgNsectChallenge) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgProposeState) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgProposeState.DiscardUnknown(m)
+func (m *MsgNsectChallenge) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNsectChallenge.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgProposeState proto.InternalMessageInfo
+var xxx_messageInfo_MsgNsectChallenge proto.InternalMessageInfo
 
-func (m *MsgProposeState) GetChallengeId() uint64 {
+func (m *MsgNsectChallenge) GetFrom() string {
+	if m != nil {
+		return m.From
+	}
+	return ""
+}
+
+func (m *MsgNsectChallenge) GetChallengeId() string {
 	if m != nil {
 		return m.ChallengeId
 	}
-	return 0
+	return ""
 }
 
-func (m *MsgProposeState) GetStateHash() []byte {
+func (m *MsgNsectChallenge) GetStateHashes() [][]byte {
 	if m != nil {
-		return m.StateHash
+		return m.StateHashes
 	}
 	return nil
 }
 
-type MsgProposeStateResponse struct {
+type MsgNsectChallengeResponse struct {
 }
 
-func (m *MsgProposeStateResponse) Reset()         { *m = MsgProposeStateResponse{} }
-func (m *MsgProposeStateResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgProposeStateResponse) ProtoMessage()    {}
-func (*MsgProposeStateResponse) Descriptor() ([]byte, []int) {
+func (m *MsgNsectChallengeResponse) Reset()         { *m = MsgNsectChallengeResponse{} }
+func (m *MsgNsectChallengeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgNsectChallengeResponse) ProtoMessage()    {}
+func (*MsgNsectChallengeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{3}
 }
-func (m *MsgProposeStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgNsectChallengeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgProposeStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgNsectChallengeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgProposeStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgNsectChallengeResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -223,35 +231,36 @@ func (m *MsgProposeStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *MsgProposeStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgProposeStateResponse.Merge(m, src)
+func (m *MsgNsectChallengeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgNsectChallengeResponse.Merge(m, src)
 }
-func (m *MsgProposeStateResponse) XXX_Size() int {
+func (m *MsgNsectChallengeResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgProposeStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgProposeStateResponse.DiscardUnknown(m)
+func (m *MsgNsectChallengeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgNsectChallengeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgProposeStateResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgNsectChallengeResponse proto.InternalMessageInfo
 
-type MsgRespondState struct {
-	ChallengeId uint64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
-	StateHash   []byte `protobuf:"bytes,2,opt,name=state_hash,json=stateHash,proto3" json:"state_hash,omitempty"`
+type MsgFinishChallenge struct {
+	From        string   `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	ChallengeId string   `protobuf:"bytes,2,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
+	Witness     *Witness `protobuf:"bytes,3,opt,name=witness,proto3" json:"witness,omitempty"`
 }
 
-func (m *MsgRespondState) Reset()         { *m = MsgRespondState{} }
-func (m *MsgRespondState) String() string { return proto.CompactTextString(m) }
-func (*MsgRespondState) ProtoMessage()    {}
-func (*MsgRespondState) Descriptor() ([]byte, []int) {
+func (m *MsgFinishChallenge) Reset()         { *m = MsgFinishChallenge{} }
+func (m *MsgFinishChallenge) String() string { return proto.CompactTextString(m) }
+func (*MsgFinishChallenge) ProtoMessage()    {}
+func (*MsgFinishChallenge) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{4}
 }
-func (m *MsgRespondState) XXX_Unmarshal(b []byte) error {
+func (m *MsgFinishChallenge) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRespondState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFinishChallenge) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRespondState.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFinishChallenge.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -261,47 +270,54 @@ func (m *MsgRespondState) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *MsgRespondState) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRespondState.Merge(m, src)
+func (m *MsgFinishChallenge) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFinishChallenge.Merge(m, src)
 }
-func (m *MsgRespondState) XXX_Size() int {
+func (m *MsgFinishChallenge) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRespondState) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRespondState.DiscardUnknown(m)
+func (m *MsgFinishChallenge) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFinishChallenge.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRespondState proto.InternalMessageInfo
+var xxx_messageInfo_MsgFinishChallenge proto.InternalMessageInfo
 
-func (m *MsgRespondState) GetChallengeId() uint64 {
+func (m *MsgFinishChallenge) GetFrom() string {
+	if m != nil {
+		return m.From
+	}
+	return ""
+}
+
+func (m *MsgFinishChallenge) GetChallengeId() string {
 	if m != nil {
 		return m.ChallengeId
 	}
-	return 0
+	return ""
 }
 
-func (m *MsgRespondState) GetStateHash() []byte {
+func (m *MsgFinishChallenge) GetWitness() *Witness {
 	if m != nil {
-		return m.StateHash
+		return m.Witness
 	}
 	return nil
 }
 
-type MsgRespondStateResponse struct {
+type MsgFinishChallengeResponse struct {
 }
 
-func (m *MsgRespondStateResponse) Reset()         { *m = MsgRespondStateResponse{} }
-func (m *MsgRespondStateResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRespondStateResponse) ProtoMessage()    {}
-func (*MsgRespondStateResponse) Descriptor() ([]byte, []int) {
+func (m *MsgFinishChallengeResponse) Reset()         { *m = MsgFinishChallengeResponse{} }
+func (m *MsgFinishChallengeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgFinishChallengeResponse) ProtoMessage()    {}
+func (*MsgFinishChallengeResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3859f618de6eb745, []int{5}
 }
-func (m *MsgRespondStateResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgFinishChallengeResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRespondStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgFinishChallengeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRespondStateResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgFinishChallengeResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -311,271 +327,25 @@ func (m *MsgRespondStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *MsgRespondStateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRespondStateResponse.Merge(m, src)
+func (m *MsgFinishChallengeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgFinishChallengeResponse.Merge(m, src)
 }
-func (m *MsgRespondStateResponse) XXX_Size() int {
+func (m *MsgFinishChallengeResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRespondStateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRespondStateResponse.DiscardUnknown(m)
+func (m *MsgFinishChallengeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgFinishChallengeResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRespondStateResponse proto.InternalMessageInfo
-
-type MsgConfirmStateTransition struct {
-	ChallengeId int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
-}
-
-func (m *MsgConfirmStateTransition) Reset()         { *m = MsgConfirmStateTransition{} }
-func (m *MsgConfirmStateTransition) String() string { return proto.CompactTextString(m) }
-func (*MsgConfirmStateTransition) ProtoMessage()    {}
-func (*MsgConfirmStateTransition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{6}
-}
-func (m *MsgConfirmStateTransition) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgConfirmStateTransition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgConfirmStateTransition.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgConfirmStateTransition) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgConfirmStateTransition.Merge(m, src)
-}
-func (m *MsgConfirmStateTransition) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgConfirmStateTransition) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgConfirmStateTransition.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgConfirmStateTransition proto.InternalMessageInfo
-
-func (m *MsgConfirmStateTransition) GetChallengeId() int64 {
-	if m != nil {
-		return m.ChallengeId
-	}
-	return 0
-}
-
-type MsgConfirmStateTransitionResponse struct {
-}
-
-func (m *MsgConfirmStateTransitionResponse) Reset()         { *m = MsgConfirmStateTransitionResponse{} }
-func (m *MsgConfirmStateTransitionResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgConfirmStateTransitionResponse) ProtoMessage()    {}
-func (*MsgConfirmStateTransitionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{7}
-}
-func (m *MsgConfirmStateTransitionResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgConfirmStateTransitionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgConfirmStateTransitionResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgConfirmStateTransitionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgConfirmStateTransitionResponse.Merge(m, src)
-}
-func (m *MsgConfirmStateTransitionResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgConfirmStateTransitionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgConfirmStateTransitionResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgConfirmStateTransitionResponse proto.InternalMessageInfo
-
-type MsgDenyStateTransition struct {
-	ChallengeId int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
-}
-
-func (m *MsgDenyStateTransition) Reset()         { *m = MsgDenyStateTransition{} }
-func (m *MsgDenyStateTransition) String() string { return proto.CompactTextString(m) }
-func (*MsgDenyStateTransition) ProtoMessage()    {}
-func (*MsgDenyStateTransition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{8}
-}
-func (m *MsgDenyStateTransition) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDenyStateTransition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDenyStateTransition.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDenyStateTransition) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDenyStateTransition.Merge(m, src)
-}
-func (m *MsgDenyStateTransition) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDenyStateTransition) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDenyStateTransition.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDenyStateTransition proto.InternalMessageInfo
-
-func (m *MsgDenyStateTransition) GetChallengeId() int64 {
-	if m != nil {
-		return m.ChallengeId
-	}
-	return 0
-}
-
-type MsgDenyStateTransitionResponse struct {
-}
-
-func (m *MsgDenyStateTransitionResponse) Reset()         { *m = MsgDenyStateTransitionResponse{} }
-func (m *MsgDenyStateTransitionResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDenyStateTransitionResponse) ProtoMessage()    {}
-func (*MsgDenyStateTransitionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{9}
-}
-func (m *MsgDenyStateTransitionResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDenyStateTransitionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDenyStateTransitionResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDenyStateTransitionResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDenyStateTransitionResponse.Merge(m, src)
-}
-func (m *MsgDenyStateTransitionResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDenyStateTransitionResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDenyStateTransitionResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDenyStateTransitionResponse proto.InternalMessageInfo
-
-type MsgAddTrieNode struct {
-	ChallengeId int64 `protobuf:"varint,1,opt,name=challenge_id,json=challengeId,proto3" json:"challenge_id,omitempty"`
-}
-
-func (m *MsgAddTrieNode) Reset()         { *m = MsgAddTrieNode{} }
-func (m *MsgAddTrieNode) String() string { return proto.CompactTextString(m) }
-func (*MsgAddTrieNode) ProtoMessage()    {}
-func (*MsgAddTrieNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{10}
-}
-func (m *MsgAddTrieNode) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgAddTrieNode) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgAddTrieNode.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgAddTrieNode) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddTrieNode.Merge(m, src)
-}
-func (m *MsgAddTrieNode) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgAddTrieNode) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddTrieNode.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgAddTrieNode proto.InternalMessageInfo
-
-func (m *MsgAddTrieNode) GetChallengeId() int64 {
-	if m != nil {
-		return m.ChallengeId
-	}
-	return 0
-}
-
-type MsgAddTrieNodeResponse struct {
-}
-
-func (m *MsgAddTrieNodeResponse) Reset()         { *m = MsgAddTrieNodeResponse{} }
-func (m *MsgAddTrieNodeResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgAddTrieNodeResponse) ProtoMessage()    {}
-func (*MsgAddTrieNodeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3859f618de6eb745, []int{11}
-}
-func (m *MsgAddTrieNodeResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgAddTrieNodeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgAddTrieNodeResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgAddTrieNodeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgAddTrieNodeResponse.Merge(m, src)
-}
-func (m *MsgAddTrieNodeResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgAddTrieNodeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgAddTrieNodeResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgAddTrieNodeResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgFinishChallengeResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgInitiateChallenge)(nil), "finschia.or.settlement.v1.MsgInitiateChallenge")
-	proto.RegisterType((*MsgInitiateChallengeResponse)(nil), "finschia.or.settlement.v1.MsgInitiateChallengeResponse")
-	proto.RegisterType((*MsgProposeState)(nil), "finschia.or.settlement.v1.MsgProposeState")
-	proto.RegisterType((*MsgProposeStateResponse)(nil), "finschia.or.settlement.v1.MsgProposeStateResponse")
-	proto.RegisterType((*MsgRespondState)(nil), "finschia.or.settlement.v1.MsgRespondState")
-	proto.RegisterType((*MsgRespondStateResponse)(nil), "finschia.or.settlement.v1.MsgRespondStateResponse")
-	proto.RegisterType((*MsgConfirmStateTransition)(nil), "finschia.or.settlement.v1.MsgConfirmStateTransition")
-	proto.RegisterType((*MsgConfirmStateTransitionResponse)(nil), "finschia.or.settlement.v1.MsgConfirmStateTransitionResponse")
-	proto.RegisterType((*MsgDenyStateTransition)(nil), "finschia.or.settlement.v1.MsgDenyStateTransition")
-	proto.RegisterType((*MsgDenyStateTransitionResponse)(nil), "finschia.or.settlement.v1.MsgDenyStateTransitionResponse")
-	proto.RegisterType((*MsgAddTrieNode)(nil), "finschia.or.settlement.v1.MsgAddTrieNode")
-	proto.RegisterType((*MsgAddTrieNodeResponse)(nil), "finschia.or.settlement.v1.MsgAddTrieNodeResponse")
+	proto.RegisterType((*MsgStartChallenge)(nil), "finschia.or.settlement.v1.MsgStartChallenge")
+	proto.RegisterType((*MsgStartChallengeResponse)(nil), "finschia.or.settlement.v1.MsgStartChallengeResponse")
+	proto.RegisterType((*MsgNsectChallenge)(nil), "finschia.or.settlement.v1.MsgNsectChallenge")
+	proto.RegisterType((*MsgNsectChallengeResponse)(nil), "finschia.or.settlement.v1.MsgNsectChallengeResponse")
+	proto.RegisterType((*MsgFinishChallenge)(nil), "finschia.or.settlement.v1.MsgFinishChallenge")
+	proto.RegisterType((*MsgFinishChallengeResponse)(nil), "finschia.or.settlement.v1.MsgFinishChallengeResponse")
 }
 
 func init() {
@@ -583,43 +353,36 @@ func init() {
 }
 
 var fileDescriptor_3859f618de6eb745 = []byte{
-	// 576 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x55, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0xad, 0xbf, 0xb4, 0x9f, 0xd4, 0xdb, 0x10, 0x8a, 0x41, 0xc5, 0x89, 0xc0, 0x4a, 0x03, 0x48,
-	0x01, 0x81, 0x2d, 0xb7, 0x08, 0x84, 0x40, 0x48, 0x25, 0x08, 0xb5, 0x0b, 0x47, 0x95, 0xd3, 0x15,
-	0x1b, 0xcb, 0x89, 0x27, 0xb6, 0x95, 0x64, 0xc6, 0xf2, 0x9d, 0x54, 0xcd, 0x82, 0x15, 0x5b, 0x16,
-	0x3c, 0x16, 0xcb, 0x2e, 0x11, 0x2b, 0x94, 0x48, 0x3c, 0x07, 0xca, 0xb8, 0x36, 0x4e, 0x71, 0x7e,
-	0x5a, 0xb1, 0xf4, 0x99, 0xf3, 0x73, 0x67, 0x7c, 0x46, 0x03, 0xb5, 0x6e, 0x40, 0xb1, 0xe3, 0x07,
-	0x8e, 0xce, 0x22, 0x1d, 0x09, 0xe7, 0x7d, 0x32, 0x20, 0x94, 0xeb, 0xa7, 0x86, 0xce, 0xcf, 0xb4,
-	0x30, 0x62, 0x9c, 0xc9, 0xe5, 0x84, 0xa3, 0xb1, 0x48, 0xfb, 0xc3, 0xd1, 0x4e, 0x8d, 0xda, 0x0f,
-	0x09, 0xee, 0x98, 0xe8, 0x1d, 0xd1, 0x80, 0x07, 0x0e, 0x27, 0x0d, 0xdf, 0xe9, 0xf7, 0x09, 0xf5,
-	0x88, 0xfc, 0x10, 0x4a, 0xed, 0x3e, 0xeb, 0xf4, 0x6c, 0x3a, 0x1c, 0xb4, 0x49, 0x64, 0x53, 0x45,
-	0xaa, 0x4a, 0xf5, 0x82, 0x55, 0x14, 0x68, 0x53, 0x80, 0x4d, 0xb9, 0x0e, 0xdb, 0x31, 0xcb, 0x27,
-	0x8e, 0x3b, 0x65, 0x85, 0x86, 0xf2, 0x5f, 0x55, 0xaa, 0x17, 0xad, 0x58, 0x7d, 0x28, 0xe0, 0x66,
-	0x68, 0xc8, 0x8f, 0xa0, 0xe4, 0x20, 0x92, 0x88, 0x07, 0x8c, 0xda, 0x11, 0x63, 0x5c, 0x29, 0x08,
-	0xde, 0x8d, 0x14, 0xb5, 0x18, 0xe3, 0xf2, 0x53, 0x90, 0xbb, 0x01, 0x75, 0xfa, 0x36, 0x8e, 0x90,
-	0x93, 0x81, 0x8d, 0xdc, 0xe1, 0x44, 0x59, 0x17, 0xd4, 0x6d, 0xb1, 0xd2, 0x12, 0x0b, 0xad, 0x29,
-	0x2e, 0xdf, 0x07, 0x40, 0x4e, 0x42, 0xbb, 0xc3, 0x86, 0x94, 0x2b, 0x1b, 0x55, 0xa9, 0xbe, 0x6e,
-	0x6d, 0x4e, 0x91, 0xc6, 0x14, 0xa8, 0x1d, 0xc0, 0xbd, 0xbc, 0xbd, 0x59, 0x04, 0x43, 0x46, 0x91,
-	0xc8, 0xbb, 0x50, 0xec, 0x24, 0xa0, 0x1d, 0xb8, 0x62, 0x87, 0xeb, 0xd6, 0x56, 0x8a, 0x1d, 0xb9,
-	0xb5, 0x16, 0xdc, 0x34, 0xd1, 0x3b, 0x8e, 0x58, 0xc8, 0x90, 0xc4, 0xa1, 0xcb, 0x55, 0xf1, 0x5c,
-	0x0e, 0x27, 0xb6, 0xef, 0xa0, 0x7f, 0x71, 0x20, 0x9b, 0x02, 0x39, 0x74, 0xd0, 0xaf, 0x95, 0xe1,
-	0xee, 0x25, 0xd3, 0x64, 0xa4, 0x8b, 0xbc, 0xf8, 0xd3, 0xfd, 0xb7, 0x79, 0x59, 0xd3, 0x34, 0xef,
-	0x2d, 0x94, 0x4d, 0xf4, 0x1a, 0x8c, 0x76, 0x83, 0x28, 0x3e, 0xd4, 0x93, 0xc8, 0xa1, 0x18, 0x4c,
-	0x7f, 0x48, 0x6e, 0x72, 0x61, 0xf6, 0x7c, 0x1e, 0xc0, 0xee, 0x5c, 0x7d, 0x1a, 0xf2, 0x1a, 0x76,
-	0x4c, 0xf4, 0xde, 0x13, 0x3a, 0xba, 0x46, 0x42, 0x15, 0xd4, 0x7c, 0x71, 0x6a, 0xbf, 0x0f, 0x25,
-	0x13, 0xbd, 0x03, 0xd7, 0x3d, 0x89, 0x02, 0xd2, 0x64, 0x2e, 0x59, 0xc5, 0x56, 0x11, 0x33, 0x65,
-	0x44, 0x89, 0xdd, 0xde, 0xaf, 0x0d, 0x28, 0x98, 0xe8, 0xc9, 0x9f, 0xe0, 0xd6, 0xdf, 0xd7, 0x42,
-	0xd7, 0xe6, 0xde, 0x25, 0x2d, 0xaf, 0x6b, 0x95, 0x97, 0x57, 0x14, 0xa4, 0xe5, 0xa4, 0x50, 0x9c,
-	0xa9, 0xdd, 0x93, 0xc5, 0x46, 0x59, 0x6e, 0x65, 0x6f, 0x75, 0x6e, 0x36, 0x6f, 0xa6, 0x76, 0x4b,
-	0xf2, 0xb2, 0xdc, 0x65, 0x79, 0x79, 0xcd, 0x93, 0xbf, 0x48, 0xb0, 0x33, 0xa7, 0x77, 0xcf, 0x17,
-	0xdb, 0xe5, 0xab, 0x2a, 0x6f, 0xae, 0xa3, 0x4a, 0xc7, 0xf9, 0x2c, 0xc1, 0xed, 0xbc, 0x86, 0x1a,
-	0x8b, 0x5d, 0x73, 0x24, 0x95, 0x57, 0x57, 0x96, 0xa4, 0x53, 0xf4, 0x60, 0x2b, 0xdb, 0xe3, 0xc7,
-	0x8b, 0x9d, 0x32, 0xd4, 0x8a, 0xb1, 0x32, 0x35, 0x09, 0x7b, 0x77, 0xfc, 0x6d, 0xac, 0x4a, 0xe7,
-	0x63, 0x55, 0xfa, 0x39, 0x56, 0xa5, 0xaf, 0x13, 0x75, 0xed, 0x7c, 0xa2, 0xae, 0x7d, 0x9f, 0xa8,
-	0x6b, 0x1f, 0x5f, 0x78, 0x01, 0xf7, 0x87, 0x6d, 0xad, 0xc3, 0x06, 0xfa, 0x87, 0xe4, 0x7d, 0x49,
-	0xfc, 0x9f, 0xa1, 0xdb, 0xd3, 0xcf, 0x2e, 0x3d, 0x37, 0x7c, 0x14, 0x12, 0x6c, 0xff, 0x2f, 0xde,
-	0x9b, 0xfd, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf0, 0x2f, 0x5a, 0xb8, 0x95, 0x06, 0x00, 0x00,
+	// 456 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x93, 0x3f, 0x6f, 0xd3, 0x40,
+	0x18, 0xc6, 0x73, 0x76, 0x00, 0xf5, 0x75, 0x15, 0xc4, 0x4d, 0x6e, 0x00, 0x13, 0x3c, 0x45, 0x88,
+	0xda, 0x6a, 0xf9, 0x33, 0x21, 0x06, 0x2a, 0x55, 0x65, 0x48, 0x85, 0xcc, 0x80, 0xc4, 0x62, 0x39,
+	0xce, 0xd5, 0xb6, 0x6a, 0xdf, 0x59, 0x7e, 0xdf, 0xb4, 0xe5, 0x23, 0xb0, 0x31, 0xf3, 0x89, 0x18,
+	0x3b, 0x32, 0xa2, 0x64, 0xe3, 0x53, 0xa0, 0x5c, 0xb9, 0x42, 0x1d, 0xda, 0x28, 0x62, 0x8b, 0x7e,
+	0x79, 0xee, 0x7d, 0x9e, 0xf3, 0x73, 0x2f, 0xf8, 0x47, 0x85, 0xc4, 0x34, 0x2f, 0x92, 0x50, 0x35,
+	0x21, 0x0a, 0xa2, 0x52, 0x54, 0x42, 0x52, 0x78, 0xb2, 0x13, 0xd2, 0x59, 0x50, 0x37, 0x8a, 0x14,
+	0xdf, 0x32, 0x9a, 0x40, 0x35, 0xc1, 0x1f, 0x4d, 0x70, 0xb2, 0xd3, 0x7f, 0x72, 0xfd, 0xf1, 0xbf,
+	0x84, 0x7a, 0x8c, 0xff, 0x95, 0xc1, 0xbd, 0x11, 0x66, 0xef, 0x29, 0x69, 0x68, 0x2f, 0x4f, 0xca,
+	0x52, 0xc8, 0x4c, 0x70, 0x0e, 0xdd, 0xa3, 0x46, 0x55, 0x2e, 0x1b, 0xb0, 0xe1, 0x46, 0xa4, 0x7f,
+	0xf3, 0x1e, 0x58, 0xa4, 0x5c, 0x4b, 0x13, 0x8b, 0x14, 0x7f, 0x04, 0x4e, 0xa3, 0xca, 0x72, 0x5a,
+	0xc7, 0x32, 0xa9, 0x84, 0x6b, 0xeb, 0x3f, 0xe0, 0x02, 0x1d, 0x26, 0x95, 0xe0, 0x8f, 0x61, 0x73,
+	0x5c, 0xaa, 0xf4, 0x38, 0xce, 0x45, 0x91, 0xe5, 0xe4, 0x76, 0x07, 0x6c, 0x68, 0x47, 0x8e, 0x66,
+	0x07, 0x1a, 0xf1, 0x87, 0x00, 0x48, 0xa2, 0x8e, 0x53, 0x35, 0x95, 0xe4, 0xde, 0x1a, 0xb0, 0x61,
+	0x37, 0xda, 0x58, 0x90, 0xbd, 0x05, 0xf0, 0x5f, 0xc3, 0xd6, 0x52, 0xb6, 0x48, 0x60, 0xad, 0x24,
+	0xea, 0xf1, 0xa9, 0x81, 0x71, 0x31, 0xf9, 0x9d, 0xd5, 0xb9, 0x64, 0x6f, 0x27, 0x7e, 0xa5, 0xef,
+	0x76, 0x88, 0x22, 0x5d, 0x71, 0xb7, 0xf6, 0x2c, 0x6b, 0x69, 0xd6, 0x42, 0x82, 0x94, 0x90, 0x88,
+	0xf3, 0x04, 0x73, 0x81, 0xae, 0x3d, 0xb0, 0x87, 0x9b, 0x91, 0xa3, 0xd9, 0x81, 0x46, 0xfe, 0x7d,
+	0x1d, 0xf7, 0xaa, 0x9d, 0x89, 0xeb, 0x7f, 0x66, 0xc0, 0x47, 0x98, 0xed, 0x17, 0xb2, 0xc0, 0xfc,
+	0xbf, 0xd3, 0xbc, 0x82, 0x3b, 0xa7, 0x05, 0x49, 0x81, 0xa8, 0x3f, 0xbc, 0xb3, 0xeb, 0x07, 0xd7,
+	0xbe, 0x87, 0xe0, 0xc3, 0x85, 0x32, 0x32, 0x47, 0xfc, 0x07, 0xd0, 0x5f, 0x8e, 0x62, 0x92, 0xee,
+	0xfe, 0xb4, 0xc0, 0x1e, 0x61, 0xc6, 0x09, 0x7a, 0xad, 0x67, 0xf1, 0xf4, 0x06, 0x93, 0xa5, 0xa2,
+	0xfa, 0xcf, 0xd7, 0x51, 0x5f, 0xd6, 0x4a, 0xd0, 0x6b, 0x15, 0xb6, 0xc2, 0xf5, 0xaa, 0x7a, 0x95,
+	0xeb, 0xbf, 0xdb, 0xe1, 0xa7, 0x70, 0xb7, 0xdd, 0xcc, 0xf6, 0xcd, 0x83, 0x5a, 0xf2, 0xfe, 0x8b,
+	0xb5, 0xe4, 0xc6, 0xf8, 0xcd, 0xbb, 0x6f, 0x33, 0x8f, 0x9d, 0xcf, 0x3c, 0xf6, 0x63, 0xe6, 0xb1,
+	0x2f, 0x73, 0xaf, 0x73, 0x3e, 0xf7, 0x3a, 0xdf, 0xe7, 0x5e, 0xe7, 0xe3, 0xcb, 0xac, 0xa0, 0x7c,
+	0x3a, 0x0e, 0x52, 0x55, 0x85, 0xfb, 0x66, 0xa1, 0x8d, 0xc7, 0x36, 0x4e, 0x8e, 0xc3, 0xb3, 0xd6,
+	0x7e, 0xd3, 0xa7, 0x5a, 0xe0, 0xf8, 0xb6, 0x5e, 0xec, 0x67, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff,
+	0xdc, 0x45, 0x43, 0x69, 0x45, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -634,12 +397,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	InitiateChallenge(ctx context.Context, in *MsgInitiateChallenge, opts ...grpc.CallOption) (*MsgInitiateChallengeResponse, error)
-	ProposeState(ctx context.Context, in *MsgProposeState, opts ...grpc.CallOption) (*MsgProposeStateResponse, error)
-	RespondState(ctx context.Context, in *MsgRespondState, opts ...grpc.CallOption) (*MsgRespondStateResponse, error)
-	ConfirmStateTransition(ctx context.Context, in *MsgConfirmStateTransition, opts ...grpc.CallOption) (*MsgConfirmStateTransitionResponse, error)
-	DenyStateTransition(ctx context.Context, in *MsgDenyStateTransition, opts ...grpc.CallOption) (*MsgDenyStateTransitionResponse, error)
-	AddTrieNode(ctx context.Context, in *MsgAddTrieNode, opts ...grpc.CallOption) (*MsgAddTrieNodeResponse, error)
+	StartChallenge(ctx context.Context, in *MsgStartChallenge, opts ...grpc.CallOption) (*MsgStartChallengeResponse, error)
+	NsectChallenge(ctx context.Context, in *MsgNsectChallenge, opts ...grpc.CallOption) (*MsgNsectChallengeResponse, error)
+	FinishChallenge(ctx context.Context, in *MsgFinishChallenge, opts ...grpc.CallOption) (*MsgFinishChallengeResponse, error)
 }
 
 type msgClient struct {
@@ -650,54 +410,27 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) InitiateChallenge(ctx context.Context, in *MsgInitiateChallenge, opts ...grpc.CallOption) (*MsgInitiateChallengeResponse, error) {
-	out := new(MsgInitiateChallengeResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/InitiateChallenge", in, out, opts...)
+func (c *msgClient) StartChallenge(ctx context.Context, in *MsgStartChallenge, opts ...grpc.CallOption) (*MsgStartChallengeResponse, error) {
+	out := new(MsgStartChallengeResponse)
+	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/StartChallenge", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) ProposeState(ctx context.Context, in *MsgProposeState, opts ...grpc.CallOption) (*MsgProposeStateResponse, error) {
-	out := new(MsgProposeStateResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/ProposeState", in, out, opts...)
+func (c *msgClient) NsectChallenge(ctx context.Context, in *MsgNsectChallenge, opts ...grpc.CallOption) (*MsgNsectChallengeResponse, error) {
+	out := new(MsgNsectChallengeResponse)
+	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/NsectChallenge", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *msgClient) RespondState(ctx context.Context, in *MsgRespondState, opts ...grpc.CallOption) (*MsgRespondStateResponse, error) {
-	out := new(MsgRespondStateResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/RespondState", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) ConfirmStateTransition(ctx context.Context, in *MsgConfirmStateTransition, opts ...grpc.CallOption) (*MsgConfirmStateTransitionResponse, error) {
-	out := new(MsgConfirmStateTransitionResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/ConfirmStateTransition", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DenyStateTransition(ctx context.Context, in *MsgDenyStateTransition, opts ...grpc.CallOption) (*MsgDenyStateTransitionResponse, error) {
-	out := new(MsgDenyStateTransitionResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/DenyStateTransition", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) AddTrieNode(ctx context.Context, in *MsgAddTrieNode, opts ...grpc.CallOption) (*MsgAddTrieNodeResponse, error) {
-	out := new(MsgAddTrieNodeResponse)
-	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/AddTrieNode", in, out, opts...)
+func (c *msgClient) FinishChallenge(ctx context.Context, in *MsgFinishChallenge, opts ...grpc.CallOption) (*MsgFinishChallengeResponse, error) {
+	out := new(MsgFinishChallengeResponse)
+	err := c.cc.Invoke(ctx, "/finschia.or.settlement.v1.Msg/FinishChallenge", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -706,145 +439,79 @@ func (c *msgClient) AddTrieNode(ctx context.Context, in *MsgAddTrieNode, opts ..
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	InitiateChallenge(context.Context, *MsgInitiateChallenge) (*MsgInitiateChallengeResponse, error)
-	ProposeState(context.Context, *MsgProposeState) (*MsgProposeStateResponse, error)
-	RespondState(context.Context, *MsgRespondState) (*MsgRespondStateResponse, error)
-	ConfirmStateTransition(context.Context, *MsgConfirmStateTransition) (*MsgConfirmStateTransitionResponse, error)
-	DenyStateTransition(context.Context, *MsgDenyStateTransition) (*MsgDenyStateTransitionResponse, error)
-	AddTrieNode(context.Context, *MsgAddTrieNode) (*MsgAddTrieNodeResponse, error)
+	StartChallenge(context.Context, *MsgStartChallenge) (*MsgStartChallengeResponse, error)
+	NsectChallenge(context.Context, *MsgNsectChallenge) (*MsgNsectChallengeResponse, error)
+	FinishChallenge(context.Context, *MsgFinishChallenge) (*MsgFinishChallengeResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
-func (*UnimplementedMsgServer) InitiateChallenge(ctx context.Context, req *MsgInitiateChallenge) (*MsgInitiateChallengeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InitiateChallenge not implemented")
+func (*UnimplementedMsgServer) StartChallenge(ctx context.Context, req *MsgStartChallenge) (*MsgStartChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartChallenge not implemented")
 }
-func (*UnimplementedMsgServer) ProposeState(ctx context.Context, req *MsgProposeState) (*MsgProposeStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProposeState not implemented")
+func (*UnimplementedMsgServer) NsectChallenge(ctx context.Context, req *MsgNsectChallenge) (*MsgNsectChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NsectChallenge not implemented")
 }
-func (*UnimplementedMsgServer) RespondState(ctx context.Context, req *MsgRespondState) (*MsgRespondStateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RespondState not implemented")
-}
-func (*UnimplementedMsgServer) ConfirmStateTransition(ctx context.Context, req *MsgConfirmStateTransition) (*MsgConfirmStateTransitionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConfirmStateTransition not implemented")
-}
-func (*UnimplementedMsgServer) DenyStateTransition(ctx context.Context, req *MsgDenyStateTransition) (*MsgDenyStateTransitionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DenyStateTransition not implemented")
-}
-func (*UnimplementedMsgServer) AddTrieNode(ctx context.Context, req *MsgAddTrieNode) (*MsgAddTrieNodeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddTrieNode not implemented")
+func (*UnimplementedMsgServer) FinishChallenge(ctx context.Context, req *MsgFinishChallenge) (*MsgFinishChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FinishChallenge not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
 }
 
-func _Msg_InitiateChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgInitiateChallenge)
+func _Msg_StartChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgStartChallenge)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).InitiateChallenge(ctx, in)
+		return srv.(MsgServer).StartChallenge(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/InitiateChallenge",
+		FullMethod: "/finschia.or.settlement.v1.Msg/StartChallenge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).InitiateChallenge(ctx, req.(*MsgInitiateChallenge))
+		return srv.(MsgServer).StartChallenge(ctx, req.(*MsgStartChallenge))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_ProposeState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgProposeState)
+func _Msg_NsectChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgNsectChallenge)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).ProposeState(ctx, in)
+		return srv.(MsgServer).NsectChallenge(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/ProposeState",
+		FullMethod: "/finschia.or.settlement.v1.Msg/NsectChallenge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).ProposeState(ctx, req.(*MsgProposeState))
+		return srv.(MsgServer).NsectChallenge(ctx, req.(*MsgNsectChallenge))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RespondState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRespondState)
+func _Msg_FinishChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgFinishChallenge)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RespondState(ctx, in)
+		return srv.(MsgServer).FinishChallenge(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/RespondState",
+		FullMethod: "/finschia.or.settlement.v1.Msg/FinishChallenge",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RespondState(ctx, req.(*MsgRespondState))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_ConfirmStateTransition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgConfirmStateTransition)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).ConfirmStateTransition(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/ConfirmStateTransition",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).ConfirmStateTransition(ctx, req.(*MsgConfirmStateTransition))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DenyStateTransition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDenyStateTransition)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DenyStateTransition(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/DenyStateTransition",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DenyStateTransition(ctx, req.(*MsgDenyStateTransition))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_AddTrieNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgAddTrieNode)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).AddTrieNode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/finschia.or.settlement.v1.Msg/AddTrieNode",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).AddTrieNode(ctx, req.(*MsgAddTrieNode))
+		return srv.(MsgServer).FinishChallenge(ctx, req.(*MsgFinishChallenge))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -854,35 +521,23 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "InitiateChallenge",
-			Handler:    _Msg_InitiateChallenge_Handler,
+			MethodName: "StartChallenge",
+			Handler:    _Msg_StartChallenge_Handler,
 		},
 		{
-			MethodName: "ProposeState",
-			Handler:    _Msg_ProposeState_Handler,
+			MethodName: "NsectChallenge",
+			Handler:    _Msg_NsectChallenge_Handler,
 		},
 		{
-			MethodName: "RespondState",
-			Handler:    _Msg_RespondState_Handler,
-		},
-		{
-			MethodName: "ConfirmStateTransition",
-			Handler:    _Msg_ConfirmStateTransition_Handler,
-		},
-		{
-			MethodName: "DenyStateTransition",
-			Handler:    _Msg_DenyStateTransition_Handler,
-		},
-		{
-			MethodName: "AddTrieNode",
-			Handler:    _Msg_AddTrieNode_Handler,
+			MethodName: "FinishChallenge",
+			Handler:    _Msg_FinishChallenge_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "finschia/or/settlement/v1/tx.proto",
 }
 
-func (m *MsgInitiateChallenge) Marshal() (dAtA []byte, err error) {
+func (m *MsgStartChallenge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -892,12 +547,12 @@ func (m *MsgInitiateChallenge) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgInitiateChallenge) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgStartChallenge) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgInitiateChallenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgStartChallenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -907,36 +562,36 @@ func (m *MsgInitiateChallenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x28
 	}
-	if len(m.FinalSystemState) > 0 {
-		i -= len(m.FinalSystemState)
-		copy(dAtA[i:], m.FinalSystemState)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.FinalSystemState)))
+	if m.BlockHeight != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.BlockHeight))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x20
 	}
-	if len(m.AssertionRoot) > 0 {
-		i -= len(m.AssertionRoot)
-		copy(dAtA[i:], m.AssertionRoot)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.AssertionRoot)))
+	if len(m.RollupName) > 0 {
+		i -= len(m.RollupName)
+		copy(dAtA[i:], m.RollupName)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.RollupName)))
 		i--
 		dAtA[i] = 0x1a
 	}
-	if len(m.BlockHeaderNp1) > 0 {
-		i -= len(m.BlockHeaderNp1)
-		copy(dAtA[i:], m.BlockHeaderNp1)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.BlockHeaderNp1)))
+	if len(m.To) > 0 {
+		i -= len(m.To)
+		copy(dAtA[i:], m.To)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.To)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if m.BlockNumberN != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.BlockNumberN))
+	if len(m.From) > 0 {
+		i -= len(m.From)
+		copy(dAtA[i:], m.From)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.From)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgInitiateChallengeResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgStartChallengeResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -946,25 +601,27 @@ func (m *MsgInitiateChallengeResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgInitiateChallengeResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgStartChallengeResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgInitiateChallengeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgStartChallengeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
+	if len(m.ChallengeId) > 0 {
+		i -= len(m.ChallengeId)
+		copy(dAtA[i:], m.ChallengeId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ChallengeId)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgProposeState) Marshal() (dAtA []byte, err error) {
+func (m *MsgNsectChallenge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -974,90 +631,43 @@ func (m *MsgProposeState) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgProposeState) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNsectChallenge) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgProposeState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNsectChallenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.StateHash) > 0 {
-		i -= len(m.StateHash)
-		copy(dAtA[i:], m.StateHash)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.StateHash)))
-		i--
-		dAtA[i] = 0x12
+	if len(m.StateHashes) > 0 {
+		for iNdEx := len(m.StateHashes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.StateHashes[iNdEx])
+			copy(dAtA[i:], m.StateHashes[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.StateHashes[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
 	}
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgProposeStateResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgProposeStateResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgProposeStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRespondState) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRespondState) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRespondState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.StateHash) > 0 {
-		i -= len(m.StateHash)
-		copy(dAtA[i:], m.StateHash)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.StateHash)))
+	if len(m.ChallengeId) > 0 {
+		i -= len(m.ChallengeId)
+		copy(dAtA[i:], m.ChallengeId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ChallengeId)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
+	if len(m.From) > 0 {
+		i -= len(m.From)
+		copy(dAtA[i:], m.From)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.From)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRespondStateResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgNsectChallengeResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1067,12 +677,12 @@ func (m *MsgRespondStateResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRespondStateResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgNsectChallengeResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRespondStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgNsectChallengeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1080,7 +690,7 @@ func (m *MsgRespondStateResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgConfirmStateTransition) Marshal() (dAtA []byte, err error) {
+func (m *MsgFinishChallenge) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1090,127 +700,46 @@ func (m *MsgConfirmStateTransition) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgConfirmStateTransition) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFinishChallenge) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgConfirmStateTransition) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFinishChallenge) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
+	if m.Witness != nil {
+		{
+			size, err := m.Witness.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0x1a
 	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgConfirmStateTransitionResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgConfirmStateTransitionResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgConfirmStateTransitionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDenyStateTransition) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDenyStateTransition) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDenyStateTransition) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
+	if len(m.ChallengeId) > 0 {
+		i -= len(m.ChallengeId)
+		copy(dAtA[i:], m.ChallengeId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ChallengeId)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0x12
 	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDenyStateTransitionResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDenyStateTransitionResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDenyStateTransitionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgAddTrieNode) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgAddTrieNode) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgAddTrieNode) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.ChallengeId))
+	if len(m.From) > 0 {
+		i -= len(m.From)
+		copy(dAtA[i:], m.From)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.From)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgAddTrieNodeResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgFinishChallengeResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1220,12 +749,12 @@ func (m *MsgAddTrieNodeResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgAddTrieNodeResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgFinishChallengeResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgAddTrieNodeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgFinishChallengeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1244,26 +773,26 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *MsgInitiateChallenge) Size() (n int) {
+func (m *MsgStartChallenge) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.BlockNumberN != 0 {
-		n += 1 + sovTx(uint64(m.BlockNumberN))
-	}
-	l = len(m.BlockHeaderNp1)
+	l = len(m.From)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.AssertionRoot)
+	l = len(m.To)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.FinalSystemState)
+	l = len(m.RollupName)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.BlockHeight != 0 {
+		n += 1 + sovTx(uint64(m.BlockHeight))
 	}
 	if m.StepCount != 0 {
 		n += 1 + sovTx(uint64(m.StepCount))
@@ -1271,35 +800,43 @@ func (m *MsgInitiateChallenge) Size() (n int) {
 	return n
 }
 
-func (m *MsgInitiateChallengeResponse) Size() (n int) {
+func (m *MsgStartChallengeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	return n
-}
-
-func (m *MsgProposeState) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	l = len(m.StateHash)
+	l = len(m.ChallengeId)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgProposeStateResponse) Size() (n int) {
+func (m *MsgNsectChallenge) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.From)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ChallengeId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.StateHashes) > 0 {
+		for _, b := range m.StateHashes {
+			l = len(b)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgNsectChallengeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1308,86 +845,28 @@ func (m *MsgProposeStateResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRespondState) Size() (n int) {
+func (m *MsgFinishChallenge) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	l = len(m.StateHash)
+	l = len(m.From)
 	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.ChallengeId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Witness != nil {
+		l = m.Witness.Size()
 		n += 1 + l + sovTx(uint64(l))
 	}
 	return n
 }
 
-func (m *MsgRespondStateResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgConfirmStateTransition) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	return n
-}
-
-func (m *MsgConfirmStateTransitionResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgDenyStateTransition) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	return n
-}
-
-func (m *MsgDenyStateTransitionResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgAddTrieNode) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.ChallengeId != 0 {
-		n += 1 + sovTx(uint64(m.ChallengeId))
-	}
-	return n
-}
-
-func (m *MsgAddTrieNodeResponse) Size() (n int) {
+func (m *MsgFinishChallengeResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1402,7 +881,7 @@ func sovTx(x uint64) (n int) {
 func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
+func (m *MsgStartChallenge) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1425,36 +904,17 @@ func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgInitiateChallenge: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgStartChallenge: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgInitiateChallenge: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgStartChallenge: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BlockNumberN", wireType)
-			}
-			m.BlockNumberN = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.BlockNumberN |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field BlockHeaderNp1", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
-			var byteLen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1464,31 +924,61 @@ func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.BlockHeaderNp1 = append(m.BlockHeaderNp1[:0], dAtA[iNdEx:postIndex]...)
-			if m.BlockHeaderNp1 == nil {
-				m.BlockHeaderNp1 = []byte{}
+			m.From = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field To", wireType)
 			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.To = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field AssertionRoot", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RollupName", wireType)
 			}
-			var byteLen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1498,31 +988,29 @@ func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.AssertionRoot = append(m.AssertionRoot[:0], dAtA[iNdEx:postIndex]...)
-			if m.AssertionRoot == nil {
-				m.AssertionRoot = []byte{}
-			}
+			m.RollupName = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FinalSystemState", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BlockHeight", wireType)
 			}
-			var byteLen int
+			m.BlockHeight = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1532,26 +1020,11 @@ func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				m.BlockHeight |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.FinalSystemState = append(m.FinalSystemState[:0], dAtA[iNdEx:postIndex]...)
-			if m.FinalSystemState == nil {
-				m.FinalSystemState = []byte{}
-			}
-			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StepCount", wireType)
@@ -1592,7 +1065,7 @@ func (m *MsgInitiateChallenge) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgInitiateChallengeResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgStartChallengeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1615,17 +1088,17 @@ func (m *MsgInitiateChallengeResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgInitiateChallengeResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgStartChallengeResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgInitiateChallengeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgStartChallengeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
 			}
-			m.ChallengeId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1635,11 +1108,24 @@ func (m *MsgInitiateChallengeResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ChallengeId |= uint64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChallengeId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -1661,7 +1147,7 @@ func (m *MsgInitiateChallengeResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgProposeState) Unmarshal(dAtA []byte) error {
+func (m *MsgNsectChallenge) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1684,17 +1170,17 @@ func (m *MsgProposeState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgProposeState: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNsectChallenge: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgProposeState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNsectChallenge: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
-			m.ChallengeId = 0
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1704,14 +1190,59 @@ func (m *MsgProposeState) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.ChallengeId |= uint64(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.From = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StateHash", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChallengeId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StateHashes", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -1738,10 +1269,8 @@ func (m *MsgProposeState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.StateHash = append(m.StateHash[:0], dAtA[iNdEx:postIndex]...)
-			if m.StateHash == nil {
-				m.StateHash = []byte{}
-			}
+			m.StateHashes = append(m.StateHashes, make([]byte, postIndex-iNdEx))
+			copy(m.StateHashes[len(m.StateHashes)-1], dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1764,7 +1293,7 @@ func (m *MsgProposeState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgProposeStateResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgNsectChallengeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1787,10 +1316,10 @@ func (m *MsgProposeStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgProposeStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgNsectChallengeResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgProposeStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgNsectChallengeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1814,7 +1343,7 @@ func (m *MsgProposeStateResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRespondState) Unmarshal(dAtA []byte) error {
+func (m *MsgFinishChallenge) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1837,36 +1366,17 @@ func (m *MsgRespondState) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRespondState: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFinishChallenge: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRespondState: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFinishChallenge: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
-			}
-			m.ChallengeId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ChallengeId |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StateHash", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field From", wireType)
 			}
-			var byteLen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1876,24 +1386,90 @@ func (m *MsgRespondState) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				byteLen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if byteLen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + byteLen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.StateHash = append(m.StateHash[:0], dAtA[iNdEx:postIndex]...)
-			if m.StateHash == nil {
-				m.StateHash = []byte{}
+			m.From = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ChallengeId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Witness", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Witness == nil {
+				m.Witness = &Witness{}
+			}
+			if err := m.Witness.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		default:
@@ -1917,7 +1493,7 @@ func (m *MsgRespondState) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRespondStateResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgFinishChallengeResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1940,367 +1516,10 @@ func (m *MsgRespondStateResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRespondStateResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgFinishChallengeResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRespondStateResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgConfirmStateTransition) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgConfirmStateTransition: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgConfirmStateTransition: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
-			}
-			m.ChallengeId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ChallengeId |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgConfirmStateTransitionResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgConfirmStateTransitionResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgConfirmStateTransitionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDenyStateTransition) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDenyStateTransition: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDenyStateTransition: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
-			}
-			m.ChallengeId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ChallengeId |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDenyStateTransitionResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDenyStateTransitionResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDenyStateTransitionResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgAddTrieNode) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddTrieNode: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddTrieNode: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChallengeId", wireType)
-			}
-			m.ChallengeId = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.ChallengeId |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgAddTrieNodeResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgAddTrieNodeResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgAddTrieNodeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgFinishChallengeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

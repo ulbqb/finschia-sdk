@@ -1,60 +1,41 @@
 syntax = "proto3";
 package finschia.or.settlement.v1;
 
-// this line is used by starport scaffolding # proto/tx/import
+import "finschia/or/settlement/v1/settlement.proto";
 
 option go_package = "github.com/Finschia/finschia-sdk/x/or/settlement/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc InitiateChallenge(MsgInitiateChallenge) returns (MsgInitiateChallengeResponse);
-  rpc ProposeState(MsgProposeState) returns (MsgProposeStateResponse);
-  rpc RespondState(MsgRespondState) returns (MsgRespondStateResponse);
-  rpc ConfirmStateTransition(MsgConfirmStateTransition) returns (MsgConfirmStateTransitionResponse);
-  rpc DenyStateTransition(MsgDenyStateTransition) returns (MsgDenyStateTransitionResponse);
-  rpc AddTrieNode(MsgAddTrieNode) returns (MsgAddTrieNodeResponse);
+  rpc StartChallenge(MsgStartChallenge) returns (MsgStartChallengeResponse);
+  rpc NsectChallenge(MsgNsectChallenge) returns (MsgNsectChallengeResponse);
+  rpc FinishChallenge(MsgFinishChallenge) returns (MsgFinishChallengeResponse);
 }
 
-message MsgInitiateChallenge {
-  int64  block_number_n     = 1;
-  bytes  block_header_np1   = 2;
-  bytes  assertion_root     = 3;
-  bytes  final_system_state = 4;
-  uint64 step_count         = 5;
+message MsgStartChallenge {
+  string from         = 1;
+  string to           = 2;
+  string rollup_name  = 3;
+  int64  block_height = 4;
+  uint64 step_count   = 5;
 }
 
-message MsgInitiateChallengeResponse {
-  uint64 challenge_id = 1;
+message MsgStartChallengeResponse {
+  string challenge_id = 1;
 }
 
-message MsgProposeState {
-  uint64 challenge_id = 1;
-  bytes  state_hash   = 2;
+message MsgNsectChallenge {
+  string         from         = 1;
+  string         challenge_id = 2;
+  repeated bytes state_hashes = 3;
 }
 
-message MsgProposeStateResponse {}
+message MsgNsectChallengeResponse {}
 
-message MsgRespondState {
-  uint64 challenge_id = 1;
-  bytes  state_hash   = 2;
+message MsgFinishChallenge {
+  string  from         = 1;
+  string  challenge_id = 2;
+  Witness witness      = 3;
 }
 
-message MsgRespondStateResponse {}
-
-message MsgConfirmStateTransition {
-  int64 challenge_id = 1;
-}
-
-message MsgConfirmStateTransitionResponse {}
-
-message MsgDenyStateTransition {
-  int64 challenge_id = 1;
-}
-
-message MsgDenyStateTransitionResponse {}
-
-message MsgAddTrieNode {
-  int64 challenge_id = 1;
-}
-
-message MsgAddTrieNodeResponse {}
+message MsgFinishChallengeResponse {}
