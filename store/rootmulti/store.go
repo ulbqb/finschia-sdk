@@ -857,12 +857,10 @@ func (rs *Store) loadCommitStoreFromParams(key types.StoreKey, id types.CommitID
 	case types.StoreTypeIAVL:
 		var store types.CommitKVStore
 		var err error
-		switch {
-		case params.statelessTree != nil:
-			store, err = iavl.LoadStoreWithStatelessTree(params.statelessTree)
-		case params.initialVersion == 0:
-			store, err = iavl.LoadStore(db, rs.logger, key, id, rs.lazyLoading, rs.iavlCacheSize, true)
-		default:
+
+		if params.initialVersion == 0 {
+			store, err = iavl.LoadStore(db, rs.logger, key, id, rs.lazyLoading, rs.iavlCacheSize, rs.iavlDisableFastNode)
+		} else {
 			store, err = iavl.LoadStoreWithInitialVersion(db, rs.logger, key, id, rs.lazyLoading, params.initialVersion, rs.iavlCacheSize, rs.iavlDisableFastNode)
 		}
 
@@ -960,14 +958,6 @@ func (s *Store) GetMemStoreKeys() map[string]*sdk.MemoryStoreKey {
 		}
 	}
 	return storeKeys
-}
-
-func (s *Store) SetStatelessTree(oracle iavltree.OracleClientI, version int64) {
-	for _, key := range s.GetKVStoreKeys() {
-		storeParams := s.storesParams[key]
-		storeParams.statelessTree = iavltree.NewStatelessTree(dbm.NewMemDB(), 100, false, version, oracle, key.Name())
-		s.storesParams[key] = storeParams
-	}
 }
 
 type storeParams struct {
