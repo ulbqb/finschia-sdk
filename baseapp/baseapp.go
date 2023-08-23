@@ -20,6 +20,7 @@ import (
 
 	"github.com/Finschia/finschia-sdk/codec/types"
 	"github.com/Finschia/finschia-sdk/server/config"
+	"github.com/Finschia/finschia-sdk/slessdb"
 	"github.com/Finschia/finschia-sdk/snapshots"
 	"github.com/Finschia/finschia-sdk/store"
 	"github.com/Finschia/finschia-sdk/store/rootmulti"
@@ -845,7 +846,18 @@ func (app *BaseApp) runMsgs(ctx sdk.Context, msgs []sdk.Msg) (*sdk.Result, error
 }
 
 func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (*BaseApp, error) {
-	stateless := NewBaseApp(app.Name(), app.logger, dbm.NewMemDB(), app.txDecoder)
+	cms, ok := app.CommitMultiStore().(*rootmulti.Store)
+	if !ok {
+		return nil, errors.New("stateless application requires a rootmulti store")
+	}
+
+	stores := []string{}
+	for _, key := range cms.GetKVStoreKeys() {
+		stores = append(stores, key.Name())
+	}
+
+	slessDB := slessdb.NewSlessDB(version-1, oracle, stores)
+	stateless := NewBaseApp(app.Name(), app.logger, slessDB, app.txDecoder)
 
 	stateless.msgServiceRouter = app.msgServiceRouter
 	stateless.anteHandler = app.anteHandler
@@ -853,10 +865,6 @@ func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (
 	stateless.endBlocker = app.endBlocker
 
 	// stores are mounted
-	cms, ok := app.CommitMultiStore().(*rootmulti.Store)
-	if !ok {
-		return nil, errors.New("stateless application requires a rootmulti store")
-	}
 	kvStoreKeys := cms.GetKVStoreKeys()
 	stateless.MountKVStores(kvStoreKeys)
 	memStoreKeys := cms.GetMemStoreKeys()
@@ -866,11 +874,11 @@ func (app *BaseApp) StatelessApp(version int64, oracle iavltree.OracleClientI) (
 	stateless.paramStore = app.paramStore
 
 	// set stateless store
-	statelessCms, ok := stateless.CommitMultiStore().(*rootmulti.Store)
-	if !ok {
-		return nil, errors.New("stateless application requires a rootmulti store")
-	}
-	statelessCms.SetStatelessTree(oracle, version-1)
+	// statelessCms, ok := stateless.CommitMultiStore().(*rootmulti.Store)
+	// if !ok {
+	// 	return nil, errors.New("stateless application requires a rootmulti store")
+	// }
+	// statelessCms.SetStatelessTree(oracle, version-1)
 
 	err := stateless.LoadLatestVersion()
 	if err != nil {
